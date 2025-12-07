@@ -1,7 +1,7 @@
 package org.example.librex;
 
 import jakarta.annotation.PostConstruct;
-import org.example.librex.dictionaries.countries.Country;
+import org.example.librex.dictionaries.countries.CountryName;
 import org.example.librex.dictionaries.permissions.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -40,9 +40,9 @@ public class DataInitializer {
                             INSERT INTO countries (COUNTRY_NAME) VALUES 
                             ('%s'), ('%s'), ('%s')
                             """.formatted(
-                Country.POLAND,
-                Country.FINLAND,
-                Country.UNITED_STATES
+                CountryName.POLAND,
+                CountryName.FINLAND,
+                CountryName.UNITED_STATES
         ));
     }
 

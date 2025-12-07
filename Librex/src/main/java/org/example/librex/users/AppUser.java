@@ -1,24 +1,24 @@
 package org.example.librex.users;
 
 import jakarta.persistence.*;
-import org.example.librex.dictionaries.countries.Countries;
-import org.example.librex.dictionaries.permissions.Permissions;
+import org.example.librex.dictionaries.countries.Country;
+import org.example.librex.dictionaries.permissions.Permission;
 
 @Entity
-public class Users {
+public class AppUser {
 
     @Id
     @GeneratedValue
     private int UserID;
 
     @ManyToOne
-    @JoinColumn(name = "PermissionID")
-    private Permissions PermissionID;
+    @JoinColumn(name = "PermissionID", nullable = false)
+    private Permission PermissionID;
 
-    //TODO: Make nullable
+    //Nullable
     @ManyToOne
-    @JoinColumn(name = "CountryID", nullable = true)
-    private Countries CountryID;
+    @JoinColumn(name = "CountryID")
+    private Country CountryID;
 
     private String Firstname;
     private String Surname;
@@ -30,7 +30,7 @@ public class Users {
     private String Password;
     private Boolean IsBlacklisted;
 
-    public Users(Permissions Permission, Countries Country, String Firstname, String Surname, String Birthdate, String Address, String Phone, String Email, String Username, String Password, Boolean IsBlacklisted) {
+    public AppUser(Permission Permission, Country Country, String Firstname, String Surname, String Birthdate, String Address, String Phone, String Email, String Username, String Password, Boolean IsBlacklisted) {
         this.PermissionID = Permission;
         this.CountryID = Country;
         this.Firstname = Firstname;
@@ -45,14 +45,14 @@ public class Users {
 
     }
 
-    public Users() {
+    public AppUser() {
     }
 
-    public Permissions getPermissionID() {
+    public Permission getPermissionID() {
         return PermissionID;
     }
 
-    public Countries getCountryID() {
+    public Country getCountryID() {
         return CountryID;
     }
 
