@@ -4,95 +4,164 @@ import jakarta.persistence.*;
 import org.example.librex.dictionaries.countries.Country;
 import org.example.librex.dictionaries.permissions.Permission;
 
+import java.time.LocalDate;
+
 @Entity
+@Table(name = "users")
 public class AppUser {
 
     @Id
-    @GeneratedValue
-    private int UserID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "PermissionID", nullable = false)
-    private Permission PermissionID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "permission_id", nullable = false)
+    private Permission permission;
 
-    //Nullable
-    @ManyToOne
-    @JoinColumn(name = "CountryID")
-    private Country CountryID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Country country;
 
-    private String Firstname;
-    private String Surname;
-    private String Birthdate;
-    private String Address;
-    private String Phone;
-    private String Email;
-    private String Username;
-    private String Password;
-    private Boolean IsBlacklisted;
+    @Column(name = "firstname", nullable = false, length = 50)
+    private String firstname;
 
-    public AppUser(Permission Permission, Country Country, String Firstname, String Surname, String Birthdate, String Address, String Phone, String Email, String Username, String Password, Boolean IsBlacklisted) {
-        this.PermissionID = Permission;
-        this.CountryID = Country;
-        this.Firstname = Firstname;
-        this.Surname = Surname;
-        this.Birthdate = Birthdate;
-        this.Address = Address;
-        this.Phone = Phone;
-        this.Email = Email;
-        this.Username = Username;
-        this.Password = Password;
-        this.IsBlacklisted = IsBlacklisted;
+    @Column(name = "surname", nullable = false, length = 50)
+    private String surname;
 
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
+
+    @Column(name = "address", length = 100)
+    private String address;
+
+    @Column(name = "phone", length = 30)
+    private String phone;
+
+    @Column(name = "email", nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(name = "username", nullable = false, unique = true, length = 50)
+    private String username;
+
+    @Column(name = "password", nullable = false, length = 255)
+    private String passwordHash;
+
+    @Column(name = "is_blacklisted", nullable = false)
+    private boolean blacklisted = false;
+
+    protected AppUser() {
     }
 
-    public AppUser() {
+    public AppUser(Permission permission,
+                   Country country,
+                   String firstname,
+                   String surname,
+                   LocalDate birthdate,
+                   String address,
+                   String phone,
+                   String email,
+                   String username,
+                   String passwordHash,
+                   boolean blacklisted) {
+        this.permission = permission;
+        this.country = country;
+        this.firstname = firstname;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.blacklisted = blacklisted;
     }
 
-    public Permission getPermissionID() {
-        return PermissionID;
+    public Integer getId() {
+        return id;
     }
 
-    public Country getCountryID() {
-        return CountryID;
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getFirstname() {
-        return Firstname;
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getSurname() {
-        return Surname;
+        return surname;
     }
 
-    public String getBirthdate() {
-        return Birthdate;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
-    public String getPassword() {
-        return Password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public Boolean getBlacklisted() {
-        return IsBlacklisted;
+    public void changePassword(String newPasswordHash) {
+        this.passwordHash = newPasswordHash;
     }
 
-    public int getUserID() {
-        return UserID;
+    public boolean isBlacklisted() {
+        return blacklisted;
+    }
+
+    public void setBlacklisted(boolean blacklisted) {
+        this.blacklisted = blacklisted;
     }
 }

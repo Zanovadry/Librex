@@ -1,10 +1,13 @@
 package org.example.librex.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
+
 public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 
-
+    Optional<AppUser> findByEmail(String email);
+    Optional<AppUser> findByUsername(String username);
+    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
 }

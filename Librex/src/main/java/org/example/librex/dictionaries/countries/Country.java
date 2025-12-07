@@ -3,19 +3,30 @@ package org.example.librex.dictionaries.countries;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "countries_dict")
 public class Country {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int CountryID;
+    @Column(name = "country_id")
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private CountryName CountryName;
+    @Column(name = "country_name", nullable = false, unique = true, length = 100)
+    private CountryName name;
 
-    public int getCountryID() {
-        return CountryID;
+    protected Country() {
     }
 
-    public CountryName getCountryName() {
-        return CountryName;
+    public Country(CountryName name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public CountryName getName() {
+        return name;
     }
 }
