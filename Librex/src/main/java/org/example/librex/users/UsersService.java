@@ -18,4 +18,10 @@ public class UsersService {
         return usersRepository.findAll();
     }
 
+    public Users addUser(Users user) {
+        usersRepository.save(user);
+        return user;
+    }
+
+
 }

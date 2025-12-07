@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import org.example.librex.dictionaries.countries.Countries;
 import org.example.librex.dictionaries.permissions.Permissions;
 
-import java.util.Optional;
-
 @Entity
 public class Users {
 
@@ -48,5 +46,53 @@ public class Users {
     }
 
     public Users() {
+    }
+
+    public Permissions getPermissionID() {
+        return PermissionID;
+    }
+
+    public Countries getCountryID() {
+        return CountryID;
+    }
+
+    public String getFirstname() {
+        return Firstname;
+    }
+
+    public String getSurname() {
+        return Surname;
+    }
+
+    public String getBirthdate() {
+        return Birthdate;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public Boolean getBlacklisted() {
+        return IsBlacklisted;
+    }
+
+    public int getUserID() {
+        return UserID;
     }
 }

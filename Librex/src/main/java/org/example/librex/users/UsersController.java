@@ -1,8 +1,7 @@
 package org.example.librex.users;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,12 @@ public class UsersController {
     @GetMapping
     public List<Users> findAll() {
         return usersService.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Users addUser(@RequestBody Users user) {
+        System.out.println("Firstname: " + user.getFirstname());
+        return usersService.addUser(user);
     }
 }

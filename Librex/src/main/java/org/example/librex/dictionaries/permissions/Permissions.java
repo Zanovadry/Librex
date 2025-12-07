@@ -11,4 +11,12 @@ public class Permissions {
     //TODO: Determine if using enum is a good idea
     @Enumerated(EnumType.STRING)
     private Role Role;
+
+    public int getPermissionID() {
+        return PermissionID;
+    }
+
+    public Role getRole() {
+        return Role;
+    }
 }

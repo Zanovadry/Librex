@@ -11,4 +11,12 @@ public class Countries {
     //TODO: Determine if using enum is a good idea
     @Enumerated(EnumType.STRING)
     private Country CountryName;
+
+    public int getCountryID() {
+        return CountryID;
+    }
+
+    public Country getCountryName() {
+        return CountryName;
+    }
 }
