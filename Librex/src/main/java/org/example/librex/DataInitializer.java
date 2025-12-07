@@ -23,9 +23,9 @@ public class DataInitializer {
 
         System.out.println("Initializing permissions...");
 
-        jdbcTemplate.execute("DELETE FROM permissions");
+        jdbcTemplate.execute("DELETE FROM permission");
         jdbcTemplate.execute("""
-                            INSERT INTO permissions (ROLE) VALUES 
+                            INSERT INTO permission (ROLE) VALUES 
                             ('%s'), ('%s'), ('%s')
                             """.formatted(
                         Role.ADMIN,
@@ -35,9 +35,9 @@ public class DataInitializer {
 
         System.out.println("Initializing countries...");
 
-        jdbcTemplate.execute("DELETE FROM countries");
+        jdbcTemplate.execute("DELETE FROM country");
         jdbcTemplate.execute("""
-                            INSERT INTO countries (COUNTRY_NAME) VALUES 
+                            INSERT INTO country (COUNTRY_NAME) VALUES 
                             ('%s'), ('%s'), ('%s')
                             """.formatted(
                 CountryName.POLAND,

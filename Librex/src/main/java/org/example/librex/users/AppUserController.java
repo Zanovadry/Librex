@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("users")
@@ -18,6 +19,11 @@ public class AppUserController {
     @GetMapping
     public List<AppUser> findAll() {
         return appUserService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<AppUser> findById(@PathVariable int id){
+        return appUserService.findById(id);
     }
 
     @PostMapping
