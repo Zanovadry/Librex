@@ -1,5 +1,6 @@
 package org.example.librex.dictionaries.countries;
 
+//TODO: add more
 public enum CountryName {
     POLAND,
     GERMANY,
