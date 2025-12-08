@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.genres;
+package org.example.librex.dictionaries.genre;
 
 import jakarta.persistence.*;
 

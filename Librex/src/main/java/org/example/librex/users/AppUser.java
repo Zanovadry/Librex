@@ -1,8 +1,8 @@
 package org.example.librex.users;
 
 import jakarta.persistence.*;
-import org.example.librex.dictionaries.countries.Country;
-import org.example.librex.dictionaries.permissions.Permission;
+import org.example.librex.dictionaries.country.Country;
+import org.example.librex.dictionaries.permission.Permission;
 
 import java.time.LocalDate;
 

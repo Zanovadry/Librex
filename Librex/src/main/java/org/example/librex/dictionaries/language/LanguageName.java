@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.languages;
+package org.example.librex.dictionaries.language;
 
 //TODO: więcej
 public enum LanguageName {

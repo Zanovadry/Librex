@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.categories;
+package org.example.librex.dictionaries.category;
 
 //TODO: add more
 public enum CategoryName {

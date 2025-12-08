@@ -2,7 +2,7 @@ package org.example.librex.reservations;
 
 import jakarta.persistence.*;
 import org.example.librex.users.AppUser;
-import org.example.librex.books.bookcopy.BookCopy;
+import org.example.librex.books.copy.BookCopy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

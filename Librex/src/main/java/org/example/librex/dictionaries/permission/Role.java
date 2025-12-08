@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.permissions;
+package org.example.librex.dictionaries.permission;
 
 //TODO: add more
 public enum Role {

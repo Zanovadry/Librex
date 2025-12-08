@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.countries;
+package org.example.librex.dictionaries.country;
 
 import jakarta.persistence.*;
 

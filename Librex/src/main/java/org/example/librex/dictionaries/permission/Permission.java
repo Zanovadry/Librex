@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.permissions;
+package org.example.librex.dictionaries.permission;
 
 import jakarta.persistence.*;
 
