@@ -17,7 +17,7 @@ public class Genre {
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private GenreName name;
 
-    public Genre() {}
+    protected Genre() {}
 
     public Genre(GenreName name) {
         this.name = name;

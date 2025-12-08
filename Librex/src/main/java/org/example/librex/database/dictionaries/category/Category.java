@@ -16,7 +16,7 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private CategoryName name;
 
-    public Category() {}
+    protected Category() {}
 
     public Category(CategoryName name) {
         this.name = name;

@@ -16,7 +16,7 @@ public class Language {
     @Column(name = "language", nullable = false, unique = true, length = 50)
     private LanguageName name;
 
-    public Language() {}
+    protected Language() {}
 
     public Language(LanguageName name) {
         this.name = name;
