@@ -1,9 +1,9 @@
 package org.example.librex.auth;
 
 import jakarta.validation.Valid;
-import org.example.librex.users.AppUserService;
-import org.example.librex.users.dto.RegistrationRequest;
-import org.example.librex.users.dto.UserResponse;
+import org.example.librex.database.users.AppUserService;
+import org.example.librex.database.users.dto.RegistrationRequest;
+import org.example.librex.database.users.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package org.example.librex.users;
 
-import org.example.librex.users.dto.RegistrationRequest;
+import org.example.librex.database.users.dto.RegistrationRequest;
 
 public class RegistrationRequestTestFactory {
 
