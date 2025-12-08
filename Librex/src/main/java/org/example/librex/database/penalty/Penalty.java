@@ -28,10 +28,6 @@ public class Penalty {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "is_paid", nullable = false)
-    private boolean paid = false;
-
-    //TODO: do wee need this?
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
@@ -48,7 +44,6 @@ public class Penalty {
         this.amount = amount;
         this.daysLate = daysLate;
         this.createdAt = createdAt;
-        this.paid = paid;
         this.paidAt = paidAt;
     }
 
@@ -86,14 +81,6 @@ public class Penalty {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
     }
 
     public LocalDateTime getPaidAt() {
