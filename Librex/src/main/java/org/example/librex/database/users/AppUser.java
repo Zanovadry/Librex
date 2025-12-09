@@ -1,13 +1,13 @@
-package org.example.librex.users;
+package org.example.librex.database.users;
 
 import jakarta.persistence.*;
-import org.example.librex.dictionaries.countries.Country;
-import org.example.librex.dictionaries.permissions.Permission;
+import org.example.librex.database.dictionaries.country.Country;
+import org.example.librex.database.dictionaries.permission.Permission;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class AppUser {
 
     @Id

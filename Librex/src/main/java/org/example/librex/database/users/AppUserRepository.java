@@ -1,4 +1,4 @@
-package org.example.librex.users;
+package org.example.librex.database.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

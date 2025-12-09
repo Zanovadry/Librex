@@ -1,4 +1,4 @@
-package org.example.librex.users.dto;
+package org.example.librex.database.users.dto;
 
 public class UserResponse {
 

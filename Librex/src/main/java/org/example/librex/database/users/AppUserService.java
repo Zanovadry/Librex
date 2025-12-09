@@ -1,10 +1,10 @@
-package org.example.librex.users;
+package org.example.librex.database.users;
 
-import org.example.librex.dictionaries.permissions.Permission;
-import org.example.librex.dictionaries.permissions.PermissionRepository;
-import org.example.librex.dictionaries.permissions.Role;
-import org.example.librex.users.dto.RegistrationRequest;
-import org.example.librex.users.dto.UserResponse;
+import org.example.librex.database.dictionaries.permission.Permission;
+import org.example.librex.database.dictionaries.permission.PermissionRepository;
+import org.example.librex.database.dictionaries.permission.Role;
+import org.example.librex.database.users.dto.RegistrationRequest;
+import org.example.librex.database.users.dto.UserResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

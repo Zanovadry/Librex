@@ -1,8 +1,9 @@
 package org.example.librex.users;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.librex.users.dto.RegistrationRequest;
-import org.example.librex.users.dto.UserResponse;
+import org.example.librex.database.users.AppUserRepository;
+import org.example.librex.database.users.dto.RegistrationRequest;
+import org.example.librex.database.users.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

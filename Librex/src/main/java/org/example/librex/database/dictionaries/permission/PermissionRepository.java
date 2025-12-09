@@ -1,4 +1,4 @@
-package org.example.librex.dictionaries.permissions;
+package org.example.librex.database.dictionaries.permission;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

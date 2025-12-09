@@ -1,4 +1,4 @@
-package org.example.librex.users.dto;
+package org.example.librex.database.users.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

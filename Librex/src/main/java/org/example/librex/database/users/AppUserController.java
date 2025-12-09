@@ -1,7 +1,7 @@
-package org.example.librex.users;
+package org.example.librex.database.users;
 
-import org.example.librex.users.dto.RegistrationRequest;
-import org.example.librex.users.dto.UserResponse;
+import org.example.librex.database.users.dto.RegistrationRequest;
+import org.example.librex.database.users.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
