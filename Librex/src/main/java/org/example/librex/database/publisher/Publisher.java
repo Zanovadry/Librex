@@ -1,6 +1,8 @@
 package org.example.librex.database.publisher;
 
 import jakarta.persistence.*;
+import org.example.librex.database.dictionaries.country.Country;
+
 import java.time.LocalDate;
 
 @Entity
@@ -18,8 +20,9 @@ public class Publisher {
     @Column(name = "address", length = 100)
     private String address;
 
-    @Column(name = "country_id", nullable = false)
-    private Integer countryId;   // można później zmienić na @ManyToOne Country
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;   // można później zmienić na @ManyToOne Country
 
     @Column(name = "email", length = 100, unique = true)
     private String email;
@@ -36,14 +39,14 @@ public class Publisher {
     public Publisher(Integer publisherId,
                      String name,
                      String address,
-                     Integer countryId,
+                     Country country,
                      String email,
                      String webpage,
                      LocalDate foundationDate) {
         this.publisherId = publisherId;
         this.name = name;
         this.address = address;
-        this.countryId = countryId;
+        this.country = country;
         this.email = email;
         this.webpage = webpage;
         this.foundationDate = foundationDate;
@@ -61,8 +64,8 @@ public class Publisher {
         return address;
     }
 
-    public Integer getCountryId() {
-        return countryId;
+    public Country getCountry() {
+        return country;
     }
 
     public String getEmail() {
@@ -85,8 +88,8 @@ public class Publisher {
         this.address = address;
     }
 
-    public void setCountryId(Integer countryId) {
-        this.countryId = countryId;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public void setEmail(String email) {

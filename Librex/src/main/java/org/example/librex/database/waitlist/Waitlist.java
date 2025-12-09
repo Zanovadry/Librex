@@ -12,25 +12,25 @@ public class Waitlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "WaitlistID")
+    @Column(name = "waitlist_id")
     private Integer waitlistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "UserID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private AppUser appUser;   // albo @ManyToOne do encji User
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "TitleID", nullable = false)
+    @JoinColumn(name = "title_id", nullable = false)
     private BookTitle bookTitle;  // albo @ManyToOne do encji Title
 
-    @Column(name = "IsActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(name = "CreateDate", nullable = false)
+    @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
     //TODO: position?
-    @Column(name = "Position")
+    @Column(name = "position")
     private Integer position;
 
 

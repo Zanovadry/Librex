@@ -3,8 +3,7 @@ package org.example.librex.database.dictionaries.genre;
 import jakarta.persistence.*;
 
 @Entity
-//TODO: w schemacie jest GenreDict (raz mamy l.mn. a raz l.poj.)
-@Table(name = "genres_dict")
+@Table(name = "genre_dict")
 public class Genre {
 
     @Id

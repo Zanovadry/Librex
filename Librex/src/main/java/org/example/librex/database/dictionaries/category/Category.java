@@ -3,7 +3,7 @@ package org.example.librex.database.dictionaries.category;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "categories_dict")
+@Table(name = "category_dict")
 public class Category {
 
     @Id
