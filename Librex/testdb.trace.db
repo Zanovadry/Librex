@@ -1,0 +1,16 @@
+2025-12-07 22:55:27.590612+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "PERMISSION" nie istnieje
+Table "PERMISSION" not found; SQL statement:
+DELETE FROM permission [42102-240]
+2025-12-07 22:55:39.420895+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "PERMISSION" nie istnieje
+Table "PERMISSION" not found; SQL statement:
+DELETE FROM permission [42102-240]
+2025-12-07 22:55:49.947400+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "PERMISSION" nie istnieje
+Table "PERMISSION" not found; SQL statement:
+DELETE FROM permission [42102-240]
+2025-12-07 22:55:58.171059+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "PERMISSION" nie istnieje
+Table "PERMISSION" not found; SQL statement:
+DELETE FROM permission [42102-240]
