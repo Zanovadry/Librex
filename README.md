@@ -199,9 +199,14 @@ Testy działają na tej samej bazie (PostgreSQL), a nie na H2.
 - PostgreSQL,
 - czyszczenie bazy przez `deleteAll()`.
 
+# 5. Schemat bazy danych
+
+<img width="1221" height="683" alt="obraz" src="https://github.com/user-attachments/assets/88db3d94-5f31-4b13-99f2-a4fe743ad124" />
+
+
 ---
 
-# 5. Jak uruchomić projekt
+# 6. Jak uruchomić projekt
 
 ## Wymagania
 - Java 21+
