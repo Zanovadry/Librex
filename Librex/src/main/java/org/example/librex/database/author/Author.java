@@ -6,7 +6,7 @@ import org.example.librex.database.dictionaries.genre.Genre;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 public class Author {
 
     @Id
@@ -20,7 +20,7 @@ public class Author {
     @Column(name = "surname", nullable = false, length = 50)
     private String surname;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 50)
+    @Column(name = "nickname", length = 50)
     private String nickname;
 
     @Column(name = "nationality", length = 100)

@@ -5,7 +5,7 @@ import org.example.librex.database.books.title.BookTitle;
 import org.example.librex.database.dictionaries.category.Category;
 
 @Entity
-@Table(name = "book_category")
+@Table(name = "book_categories")
 @IdClass(BookCategoryId.class)
 public class BookCategory {
 

@@ -2,7 +2,6 @@ package org.example.librex.database.books.title;
 
 import jakarta.persistence.*;
 import org.example.librex.database.author.Author;
-import org.example.librex.database.users.AppUser;
 
 @Entity
 @Table(name = "book_title")
@@ -18,9 +17,8 @@ public class BookTitle {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private Author author;   // zakładam, że autor to AppUser
+    private Author author;
 
-    @Lob
     @Column(name = "description")
     private String description;
 

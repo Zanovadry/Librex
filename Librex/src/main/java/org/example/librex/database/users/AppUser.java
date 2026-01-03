@@ -7,7 +7,7 @@ import org.example.librex.database.dictionaries.permission.Permission;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class AppUser {
 
     @Id

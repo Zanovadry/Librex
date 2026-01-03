@@ -12,8 +12,7 @@ public class BookCopy {
     @Column(name = "copy_id")
     private Integer id;
 
-    //TODO: ???
-    @Column(name = "inventory_number", length = 50, nullable = false, unique = true)
+    @Column(name = "inventory_num", length = 50, nullable = false, unique = true)
     private String inventoryNumber;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -23,7 +22,6 @@ public class BookCopy {
     @Column(name = "condition", length = 100)
     private String condition;
 
-    @Lob
     @Column(name = "defects")
     private String defects;
 

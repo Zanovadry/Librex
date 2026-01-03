@@ -12,11 +12,11 @@ public class Genre {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    //TODO: name czy genre_name?
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private GenreName name;
 
-    protected Genre() {}
+    protected Genre() {
+    }
 
     public Genre(GenreName name) {
         this.name = name;

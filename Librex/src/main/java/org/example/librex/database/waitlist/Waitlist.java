@@ -7,7 +7,13 @@ import org.example.librex.database.users.AppUser;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "waitlist")
+@Table(
+        name = "waitlist",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "title_id"}),
+                @UniqueConstraint(columnNames = {"title_id", "position"})
+        }
+)
 public class Waitlist {
 
     @Id
@@ -17,30 +23,32 @@ public class Waitlist {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private AppUser appUser;   // albo @ManyToOne do encji User
+    private AppUser appUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "title_id", nullable = false)
-    private BookTitle bookTitle;  // albo @ManyToOne do encji Title
+    private BookTitle bookTitle;
 
     @Column(name = "is_active", nullable = false)
-    private Boolean isActive;
+    private boolean active;
 
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
-    //TODO: position?
     @Column(name = "position")
     private Integer position;
-
 
     protected Waitlist() {
     }
 
-    public Waitlist(Integer position, LocalDateTime createDate, Boolean isActive, BookTitle bookTitle, AppUser appUser) {
+    public Waitlist(Integer position,
+                    LocalDateTime createDate,
+                    boolean active,
+                    BookTitle bookTitle,
+                    AppUser appUser) {
         this.position = position;
         this.createDate = createDate;
-        this.isActive = isActive;
+        this.active = active;
         this.bookTitle = bookTitle;
         this.appUser = appUser;
     }
@@ -58,7 +66,7 @@ public class Waitlist {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public BookTitle getBookTitle() {

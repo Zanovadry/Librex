@@ -5,7 +5,6 @@ import org.example.librex.database.books.title.BookTitle;
 import org.example.librex.database.dictionaries.language.Language;
 import org.example.librex.database.publisher.Publisher;
 
-
 import java.math.BigDecimal;
 
 @Entity
@@ -21,15 +20,15 @@ public class BookEdition {
     @JoinColumn(name = "title_id", nullable = false)
     private BookTitle title;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "publisher_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "language_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "language_id")
     private Language language;
 
-    @Column(name = "isbn", length = 25)
+    @Column(name = "isbn", length = 20)
     private String isbn;
 
     @Column(name = "pages")
@@ -38,13 +37,12 @@ public class BookEdition {
     @Column(name = "publish_year")
     private Integer publishYear;
 
-    @Column(name = "is_hard_cover", nullable = false)
+    @Column(name = "is_hard_cover")
     private boolean hardCover;
 
-    @Column(name = "value", precision = 19, scale = 2)
+    @Column(name = "value", precision = 10, scale = 2)
     private BigDecimal value;
 
-    @Lob
     @Column(name = "notes")
     private String notes;
 
