@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Librex</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #111827;
+            --card: #1f2937;
+            --accent: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.15);
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --danger: #ef4444;
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #000000 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 1100px;
+            margin: 24px;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+            border-radius: 24px;
+            box-shadow:
+                    0 24px 60px rgba(0, 0, 0, 0.9),
+                    0 0 0 1px rgba(148, 163, 184, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.7));
+            backdrop-filter: blur(12px);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        header .logo-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #e5e7eb;
+            box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9);
+        }
+
+        header .logo span {
+            opacity: 0.9;
+        }
+
+        .chip {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* AUTH SCREEN */
+
+        #auth-screen {
+            width: 100%;
+            display: flex;
+            gap: 24px;
+        }
+
+        .auth-left {
+            flex: 1;
+            padding-right: 16px;
+            border-right: 1px solid rgba(148, 163, 184, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: var(--muted);
+            max-width: 360px;
+        }
+
+        .auth-highlight {
+            margin-top: 16px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.6);
+            font-size: 12px;
+            color: #dbeafe;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-highlight span.badge {
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .auth-right {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tabs {
+            display: inline-flex;
+            padding: 2px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            cursor: pointer;
+            color: var(--muted);
+            border: none;
+            background: transparent;
+            transition: all 0.15s ease-out;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+        }
+
+        input {
+            background: #020617;
+            border-radius: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            padding: 8px 10px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.1s, box-shadow 0.1s, background-color 0.1s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+            background: #020617;
+        }
+
+        .btn {
+            border-radius: 999px;
+            padding: 9px 14px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.12s ease-out;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 35px rgba(37, 99, 235, 0.55);
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--muted);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(15, 23, 42, 1);
+            color: #e5e7eb;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .error {
+            font-size: 12px;
+            color: var(--danger);
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: rgba(127, 29, 29, 0.35);
+            border: 1px solid rgba(239, 68, 68, 0.6);
+        }
+
+        .success {
+            font-size: 12px;
+            color: #22c55e;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: rgba(22, 101, 52, 0.35);
+            border: 1px solid rgba(34, 197, 94, 0.6);
+        }
+
+        /* MAIN SCREEN */
+
+        #main-screen {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 24px 24px;
+        }
+
+        .main-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .main-top-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .main-top-subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .profile-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 13px;
+            transition: all 0.12s ease-out;
+        }
+
+        .profile-button:hover {
+            background: rgba(15, 23, 42, 1);
+            color: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .profile-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #f9a8d4, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #0b1120;
+            font-weight: 700;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .book-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.12s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 55%);
+            opacity: 0;
+            transition: opacity 0.12s ease-out;
+            pointer-events: none;
+        }
+
+        .book-card:hover::before {
+            opacity: 1;
+        }
+
+        .book-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
+            border-color: rgba(59, 130, 246, 0.7);
+        }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #020617;
+            border: 1px solid rgba(31, 41, 55, 0.9);
+        }
+
+        .book-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .book-chip {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            color: var(--muted);
+        }
+
+        .book-tag {
+            font-size: 11px;
+            color: rgba(129, 140, 248, 0.9);
+        }
+
+        .empty-state {
+            padding: 32px 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* PROFILE MODAL */
+
+        #profile-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        #profile-modal-backdrop.active {
+            display: flex;
+        }
+
+        #profile-modal {
+            width: 360px;
+            max-width: 90vw;
+            background: rgba(15, 23, 42, 0.98);
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            box-shadow:
+                    0 24px 60px rgba(0, 0, 0, 0.9),
+                    0 0 0 1px rgba(148, 163, 184, 0.25);
+            padding: 18px 18px 16px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .profile-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .profile-main-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #f97316, #4f46e5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #020617;
+            border: 2px solid #020617;
+        }
+
+        .profile-main-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-main-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .profile-main-username {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .profile-section {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(55, 65, 81, 0.8);
+        }
+
+        .profile-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-top: 4px;
+            gap: 12px;
+        }
+
+        .profile-row span:first-child {
+            color: var(--muted);
+        }
+
+        .profile-row span:last-child {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .profile-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 800px) {
+            main {
+                flex-direction: column;
+            }
+
+            #auth-screen {
+                flex-direction: column;
+            }
+
+            .auth-left {
+                padding-right: 0;
+                border-right: none;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+                padding-bottom: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">Lx</div>
+            <span>Librex</span>
+        </div>
+        <div class="chip">Library • Prototype UI</div>
+    </header>
+
+    <main>
+        <!-- AUTH SCREEN -->
+        <section id="auth-screen">
+            <div class="auth-left">
+                <div>
+                    <div class="auth-title">Zaloguj się do Librex</div>
+                    <div class="auth-subtitle">
+                        Java jest mózgiem, a to jest tylko ładny frontend. Używamy HTTP Basic Auth i Twoich istniejących endpointów.
+                    </div>
+                </div>
+                <div class="auth-highlight">
+                    <span class="badge">Info</span>
+                    <span>Po rejestracji zaloguj się tym samym loginem i hasłem, żeby zobaczyć swoje książki.</span>
+                </div>
+            </div>
+
+            <div class="auth-right">
+                <div class="tabs">
+                    <button class="tab active" data-tab="login">Logowanie</button>
+                    <button class="tab" data-tab="register">Utwórz konto</button>
+                </div>
+
+                <div id="auth-messages"></div>
+
+                <!-- Login form -->
+                <form id="login-form">
+                    <div class="field">
+                        <label for="login-username">Nazwa użytkownika</label>
+                        <input id="login-username" name="username" autocomplete="username" />
+                    </div>
+                    <div class="field">
+                        <label for="login-password">Hasło</label>
+                        <input id="login-password" name="password" type="password" autocomplete="current-password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Zaloguj się</button>
+                    <div class="form-footer">
+                        <span>Nie masz konta?</span>
+                        <button type="button" class="btn btn-secondary btn-small" id="go-register">
+                            Utwórz konto
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Register form -->
+                <form id="register-form" class="hidden">
+                    <div class="field">
+                        <label for="reg-firstname">Imię</label>
+                        <input id="reg-firstname" name="firstname" />
+                    </div>
+                    <div class="field">
+                        <label for="reg-surname">Nazwisko</label>
+                        <input id="reg-surname" name="surname" />
+                    </div>
+                    <div class="field">
+                        <label for="reg-email">E-mail</label>
+                        <input id="reg-email" name="email" type="email" autocomplete="email" />
+                    </div>
+                    <div class="field">
+                        <label for="reg-username">Nazwa użytkownika</label>
+                        <input id="reg-username" name="username" autocomplete="username" />
+                    </div>
+                    <div class="field">
+                        <label for="reg-password">Hasło</label>
+                        <input id="reg-password" name="password" type="password" autocomplete="new-password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Utwórz konto</button>
+                    <div class="form-footer">
+                        <span>Masz już konto?</span>
+                        <button type="button" class="btn btn-secondary btn-small" id="go-login">
+                            Zaloguj się
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- MAIN SCREEN -->
+        <section id="main-screen" class="hidden">
+            <div class="main-content">
+                <div class="main-top">
+                    <div>
+                        <div class="main-top-title">Twoja biblioteka</div>
+                        <div class="main-top-subtitle">Książki pobrane z backendu Javy – to jest tylko ładna warstwa na wierzchu.</div>
+                    </div>
+                    <button id="profile-button" class="profile-button">
+                        <div class="profile-avatar" id="profile-avatar-initials">U</div>
+                        <span id="profile-button-name">Użytkownik</span>
+                    </button>
+                </div>
+
+                <div id="books-container">
+                    <div class="empty-state" id="books-empty">
+                        Brak wyników lub endpoint /api/books nie jest jeszcze podłączony.<br />
+                        Dodaj później REST API w Javie (GET /api/books) i zwróć listę książek, a kafelki zapełnią się automatycznie.
+                    </div>
+                    <div class="books-grid" id="books-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profile-modal-backdrop">
+    <div id="profile-modal">
+        <div class="profile-header">
+            <div>Twój profil</div>
+            <button id="profile-close" class="btn btn-secondary btn-small">Zamknij</button>
+        </div>
+        <div class="profile-main">
+            <div class="profile-main-avatar" id="profile-avatar-big">U</div>
+            <div class="profile-main-text">
+                <div class="profile-main-name" id="profile-name">Imię Nazwisko</div>
+                <div class="profile-main-username" id="profile-username">@username</div>
+            </div>
+        </div>
+        <div class="profile-section">
+            <div class="profile-section-title">Dane konta</div>
+            <div class="profile-row">
+                <span>E-mail</span>
+                <span id="profile-email">user@example.com</span>
+            </div>
+            <div class="profile-row">
+                <span>Rola</span>
+                <span id="profile-role">CUSTOMER</span>
+            </div>
+        </div>
+        <div class="profile-footer">
+            <button id="logout-button" class="btn btn-secondary btn-small">Wyloguj</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======= KONFIGURACJA =======
+    const API_BASE = ""; // ten sam host / port, bo serwujesz index.html z Spring Boota
+
+    let auth = null; // { username, password }
+    let currentUser = null;
+
+    function setAuth(username, password) {
+        auth = { username, password };
+        localStorage.setItem("librexAuth", JSON.stringify(auth));
+    }
+
+    function clearAuth() {
+        auth = null;
+        currentUser = null;
+        localStorage.removeItem("librexAuth");
+    }
+
+    function getAuthHeader() {
+        if (!auth) return {};
+        return {
+            Authorization: "Basic " + btoa(auth.username + ":" + auth.password),
+        };
+    }
+
+    function showMessage(message, type) {
+        const container = document.getElementById("auth-messages");
+        container.innerHTML = "";
+        if (!message) return;
+        const div = document.createElement("div");
+        div.className = type === "error" ? "error" : "success";
+        div.textContent = message;
+        container.appendChild(div);
+    }
+
+    function switchAuthTab(tab) {
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const tabs = document.querySelectorAll(".tab");
+
+        tabs.forEach((t) => {
+            t.classList.toggle("active", t.dataset.tab === tab);
+        });
+
+        if (tab === "login") {
+            loginForm.classList.remove("hidden");
+            registerForm.classList.add("hidden");
+        } else {
+            loginForm.classList.add("hidden");
+            registerForm.classList.remove("hidden");
+        }
+        showMessage("", "");
+    }
+
+    function showMainScreen() {
+        document.getElementById("auth-screen").classList.add("hidden");
+        document.getElementById("main-screen").classList.remove("hidden");
+    }
+
+    function showAuthScreen() {
+        document.getElementById("main-screen").classList.add("hidden");
+        document.getElementById("auth-screen").classList.remove("hidden");
+    }
+
+    function updateProfileUI(user) {
+        const initials =
+            (user.firstname?.[0] || "") + (user.surname?.[0] || "");
+        const upperInitials = initials.toUpperCase() || "U";
+
+        document.getElementById("profile-avatar-initials").textContent =
+            upperInitials;
+        document.getElementById("profile-avatar-big").textContent =
+            upperInitials;
+
+        document.getElementById("profile-button-name").textContent =
+            user.firstname + " " + user.surname;
+
+        document.getElementById("profile-name").textContent =
+            user.firstname + " " + user.surname;
+        document.getElementById("profile-username").textContent =
+            "@" + user.username;
+        document.getElementById("profile-email").textContent = user.email;
+        document.getElementById("profile-role").textContent = user.role;
+    }
+
+    async function fetchCurrentUser(showErrors = true) {
+        try {
+            const res = await fetch(API_BASE + "/api/auth/me", {
+                headers: {
+                    ...getAuthHeader(),
+                },
+            });
+
+            if (!res.ok) {
+                if (showErrors) showMessage("Nie udało się pobrać danych użytkownika.", "error");
+                return null;
+            }
+
+            const user = await res.json();
+            currentUser = user;
+            updateProfileUI(user);
+            return user;
+        } catch (e) {
+            console.error(e);
+            if (showErrors) showMessage("Błąd połączenia z backendem.", "error");
+            return null;
+        }
+    }
+
+    async function login(username, password) {
+        setAuth(username, password);
+        const user = await fetchCurrentUser(true);
+        if (!user) {
+            clearAuth();
+            throw new Error("Login failed");
+        }
+        showMainScreen();
+        await fetchBooks();
+    }
+
+    async function registerUser(data) {
+        try {
+            const res = await fetch(API_BASE + "/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                console.error("Register error:", text);
+                showMessage("Rejestracja nie powiodła się (np. email/username zajęty).", "error");
+                return false;
+            }
+
+            const user = await res.json();
+            showMessage("Konto utworzone! Teraz zaloguj się danymi, które podałeś.", "success");
+            return user;
+        } catch (e) {
+            console.error(e);
+            showMessage("Błąd połączenia przy rejestracji.", "error");
+            return false;
+        }
+    }
+
+    // ====== KSIĄŻKI ======
+
+    function renderBooks(books) {
+        const grid = document.getElementById("books-grid");
+        const empty = document.getElementById("books-empty");
+
+        grid.innerHTML = "";
+
+        if (!books || books.length === 0) {
+            empty.style.display = "block";
+            return;
+        }
+
+        empty.style.display = "none";
+
+        books.forEach((book) => {
+            const card = document.createElement("div");
+            card.className = "book-card";
+            card.dataset.bookId = book.id;
+
+            const cover = document.createElement("div");
+            cover.className = "book-cover";
+            const coverUrl =
+                book.photo ||
+                "https://dummyimage.com/300x400/020617/94a3b8.png&text=Book";
+            cover.style.backgroundImage = `url('${coverUrl}')`;
+
+            const title = document.createElement("div");
+            title.className = "book-title";
+            title.textContent = book.title || "Bez tytułu";
+
+            const author = document.createElement("div");
+            author.className = "book-author";
+            author.textContent = book.author || "Nieznany autor";
+
+            const meta = document.createElement("div");
+            meta.className = "book-meta";
+
+            const chip = document.createElement("div");
+            chip.className = "book-chip";
+            chip.textContent = book.language || "PL";
+
+            const tag = document.createElement("div");
+            tag.className = "book-tag";
+            tag.textContent = book.category || "Książka";
+
+            meta.appendChild(chip);
+            meta.appendChild(tag);
+
+            card.appendChild(cover);
+            card.appendChild(title);
+            card.appendChild(author);
+            card.appendChild(meta);
+
+            card.addEventListener("click", () => {
+                // tu w przyszłości: przejście do strony szczegółów książki
+                alert(
+                    "Tu później przejdziesz do szczegółów książki o ID " +
+                    book.id
+                );
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    async function fetchBooks() {
+        try {
+            const res = await fetch(API_BASE + "/api/books", {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader(),
+                },
+            });
+
+            if (!res.ok) {
+                console.warn("GET /api/books nie zwrócił 200. Pewnie endpoint jeszcze nie istnieje.");
+                renderBooks([]);
+                return;
+            }
+
+            const books = await res.json();
+            renderBooks(books);
+        } catch (e) {
+            console.error(e);
+            renderBooks([]);
+        }
+    }
+
+    // ====== PROFILE MODAL ======
+
+    function openProfileModal() {
+        const backdrop = document.getElementById("profile-modal-backdrop");
+        backdrop.classList.add("active");
+    }
+
+    function closeProfileModal() {
+        const backdrop = document.getElementById("profile-modal-backdrop");
+        backdrop.classList.remove("active");
+    }
+
+    // ====== INIT ======
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Tab switching
+        document.querySelectorAll(".tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+                switchAuthTab(tab.dataset.tab);
+            });
+        });
+
+        document
+            .getElementById("go-register")
+            .addEventListener("click", () => switchAuthTab("register"));
+        document
+            .getElementById("go-login")
+            .addEventListener("click", () => switchAuthTab("login"));
+
+        // Login form
+        document
+            .getElementById("login-form")
+            .addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const username =
+                    document.getElementById("login-username").value.trim();
+                const password =
+                    document.getElementById("login-password").value;
+
+                if (!username || !password) {
+                    showMessage("Podaj login i hasło.", "error");
+                    return;
+                }
+
+                try {
+                    showMessage("Logowanie...", "success");
+                    await login(username, password);
+                    showMessage("", "");
+                } catch (err) {
+                    showMessage("Niepoprawne dane logowania.", "error");
+                }
+            });
+
+        // Register form
+        document
+            .getElementById("register-form")
+            .addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const data = {
+                    firstname: document
+                        .getElementById("reg-firstname")
+                        .value.trim(),
+                    surname: document
+                        .getElementById("reg-surname")
+                        .value.trim(),
+                    email: document.getElementById("reg-email").value.trim(),
+                    username: document
+                        .getElementById("reg-username")
+                        .value.trim(),
+                    password: document.getElementById("reg-password").value,
+                };
+
+                if (
+                    !data.firstname ||
+                    !data.surname ||
+                    !data.email ||
+                    !data.username ||
+                    !data.password
+                ) {
+                    showMessage("Uzupełnij wszystkie pola.", "error");
+                    return;
+                }
+
+                const created = await registerUser(data);
+                if (created) {
+                    switchAuthTab("login");
+                }
+            });
+
+        // Profile button
+        document
+            .getElementById("profile-button")
+            .addEventListener("click", () => {
+                if (currentUser) {
+                    openProfileModal();
+                }
+            });
+
+        document
+            .getElementById("profile-close")
+            .addEventListener("click", closeProfileModal);
+
+        document
+            .getElementById("profile-modal-backdrop")
+            .addEventListener("click", (e) => {
+                if (e.target.id === "profile-modal-backdrop") {
+                    closeProfileModal();
+                }
+            });
+
+        document
+            .getElementById("logout-button")
+            .addEventListener("click", () => {
+                clearAuth();
+                closeProfileModal();
+                showAuthScreen();
+            });
+
+        // Auto login (jeśli są dane w localStorage)
+        const stored = localStorage.getItem("librexAuth");
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed.username && parsed.password) {
+                    setAuth(parsed.username, parsed.password);
+                    const user = await fetchCurrentUser(false);
+                    if (user) {
+                        showMainScreen();
+                        await fetchBooks();
+                    } else {
+                        clearAuth();
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+                clearAuth();
+            }
+        }
+    });
+</script>
+</body>
+</html>

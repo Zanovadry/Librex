@@ -1,0 +1,69 @@
+### (opcjonalnie) Rejestracja użytkownika, którego potem zrobisz ADMIN/LIBRARIAN w bazie
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "Admin",
+  "surname": "User",
+  "email": "admin@example.com",
+  "username": "admin",
+  "password": "Admin123!"
+}
+
+###
+
+### Sprawdzenie zalogowanego użytkownika (Basic Auth)
+GET http://localhost:8080/api/auth/me
+Authorization: Basic admin Admin123!
+
+###
+
+### [CREATE] Utwórz autora
+POST http://localhost:8080/api/authors
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "firstname": "Stephen",
+  "surname": "King",
+  "nickname": "king",
+  "nationality": "USA",
+  "birthdate": "1947-09-21",
+  "deathdate": null,
+  "genreId": 1
+}
+
+###
+
+### [READ ALL] Pobierz listę wszystkich autorów
+GET http://localhost:8080/api/authors
+Authorization: Basic admin Admin123!
+
+###
+
+### [READ ONE] Pobierz konkretnego autora po ID
+GET http://localhost:8080/api/authors/1
+Authorization: Basic admin Admin123!
+
+###
+
+### [UPDATE] Zaktualizuj autora o ID = 1
+PUT http://localhost:8080/api/authors/1
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "firstname": "Stephen",
+  "surname": "King",
+  "nickname": "stephen_king",
+  "nationality": "United States",
+  "birthdate": "1947-09-21",
+  "deathdate": null,
+  "genreId": 1
+}
+
+###
+
+### [DELETE] Usuń autora o ID = 1
+DELETE http://localhost:8080/api/authors/1
+Authorization: Basic admin Admin123!

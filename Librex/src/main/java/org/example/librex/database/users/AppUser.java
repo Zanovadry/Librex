@@ -15,7 +15,7 @@ public class AppUser {
     @Column(name = "user_id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "permission_id", nullable = false)
     private Permission permission;
 

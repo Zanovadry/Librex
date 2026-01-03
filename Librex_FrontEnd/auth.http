@@ -1,0 +1,23 @@
+### Rejestracja użytkownika
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "Jan",
+  "surname": "Kowalski",
+  "email": "jan@example.com",
+  "username": "janek",
+  "password": "SuperTajneHaslo1"
+}
+
+###
+
+# Logowanie + pobranie danych zalogowanego użytkownika
+GET http://localhost:8080/api/auth/me
+Authorization: Basic janek SuperTajneHaslo1
+
+###
+
+# Alternatywny endpoint login (działa tak samo jak /me)
+GET http://localhost:8080/api/auth/login
+Authorization: Basic janek SuperTajneHaslo1

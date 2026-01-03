@@ -70,6 +70,13 @@ public class AppUserService {
         return toResponse(user);
     }
 
+    public UserResponse findByUsername(String username) {
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return toResponse(user);
+    }
+
+
     @Transactional
     public UserResponse updateUser(Integer id, RegistrationRequest update) {
         AppUser user = userRepository.findById(id)

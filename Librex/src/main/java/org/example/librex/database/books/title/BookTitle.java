@@ -22,15 +22,20 @@ public class BookTitle {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "photo", length = 500)
+    private String photo;
+
     protected BookTitle() {
     }
 
     public BookTitle(String title,
                      Author author,
-                     String description) {
+                     String description,
+                     String photo) {
         this.title = title;
         this.author = author;
         this.description = description;
+        this.photo = photo;
     }
 
     public Integer getId() {
@@ -49,6 +54,10 @@ public class BookTitle {
         return description;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -59,6 +68,10 @@ public class BookTitle {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
 
