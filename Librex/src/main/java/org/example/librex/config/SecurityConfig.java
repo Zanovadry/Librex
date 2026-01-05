@@ -21,15 +21,19 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+
+                        // błędy
+                        .requestMatchers("/error").permitAll()
+
+                        // rejestracja publiczna
+                        .requestMatchers("/api/auth/register", "/api/auth/register/**").permitAll()
+
                         // frontend publiczny
                         .requestMatchers(
                                 "/", "/index.html",
                                 "/favicon.ico",
                                 "/css/**", "/js/**", "/images/**", "/static/**"
                         ).permitAll()
-
-                        // rejestracja publiczna
-                        .requestMatchers("/api/auth/register", "/api/auth/register/**").permitAll()
 
                         // reszta wymaga zalogowania (Basic Auth)
                         .anyRequest().authenticated()

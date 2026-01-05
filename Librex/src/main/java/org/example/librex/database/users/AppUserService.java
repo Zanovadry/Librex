@@ -29,10 +29,10 @@ public class AppUserService {
     @Transactional
     public UserResponse registerUser(RegistrationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new UserAlreadyExistsException("Email already in use");
         }
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("Username already in use");
+            throw new UserAlreadyExistsException("Username already in use");
         }
 
         Permission defaultPermission = permissionRepository.findByRole(Role.CUSTOMER)
@@ -66,13 +66,13 @@ public class AppUserService {
 
     public UserResponse findById(Integer id) {
         AppUser user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return toResponse(user);
     }
 
     public UserResponse findByUsername(String username) {
         AppUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return toResponse(user);
     }
 
@@ -80,7 +80,7 @@ public class AppUserService {
     @Transactional
     public UserResponse updateUser(Integer id, RegistrationRequest update) {
         AppUser user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         user.setFirstname(update.getFirstname());
         user.setSurname(update.getSurname());
