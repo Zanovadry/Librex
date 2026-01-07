@@ -2,6 +2,7 @@ package org.example.librex.database.reservation;
 
 import org.example.librex.database.books.copy.BookCopy;
 import org.example.librex.database.books.copy.BookCopyRepository;
+import org.example.librex.database.notification.NotificationService;
 import org.example.librex.database.penalty.Penalty;
 import org.example.librex.database.penalty.PenaltyRepository;
 import org.example.librex.database.reservation.dto.BorrowRequest;
@@ -28,19 +29,22 @@ public class ReservationService {
     private final AppUserRepository appUserRepository;
     private final PenaltyRepository penaltyRepository;
     private final WaitlistRepository waitlistRepository;
+    private final NotificationService notificationService;
 
     private static final BigDecimal DAILY_LATE_FEE = new BigDecimal("0.50"); // 50 groszy za dzień
+
 
     public ReservationService(ReservationRepository reservationRepository,
                               BookCopyRepository bookCopyRepository,
                               AppUserRepository appUserRepository,
                               PenaltyRepository penaltyRepository,
-                              WaitlistRepository waitlistRepository) {
+                              WaitlistRepository waitlistRepository, NotificationService notificationService) {
         this.reservationRepository = reservationRepository;
         this.bookCopyRepository = bookCopyRepository;
         this.appUserRepository = appUserRepository;
         this.penaltyRepository = penaltyRepository;
         this.waitlistRepository = waitlistRepository;
+        this.notificationService = notificationService;
     }
 
 
@@ -162,6 +166,12 @@ public class ReservationService {
             message.append(" ATTENTION: User ").append(nextPerson.getAppUser().getEmail())
                    .append(" is waiting for this title (Position 1).");
 
+            notificationService.createBookAvailableNotification(
+                    nextPerson.getAppUser().getId(), nextPerson.getBookTitle().getTitle()
+            );
+
+            nextPerson.setActive(false);
+            waitlistRepository.save(nextPerson);
         }
 
         return message.toString();

@@ -77,8 +77,13 @@ public class Waitlist {
         return appUser;
     }
 
+    //TODO: position in waitlist never changes, fix this
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
 
