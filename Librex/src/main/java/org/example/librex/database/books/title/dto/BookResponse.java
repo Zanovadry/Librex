@@ -4,28 +4,24 @@ public class BookResponse {
 
     private Integer id;
     private String title;
-    private String authorName;
+    private String author;
     private String description;
 
     // pod kafelki – opcjonalne
     private String photo;
     private String language;
     private String category;
+    private long availableCopies;
 
-    public BookResponse(Integer id,
-                        String title,
-                        String authorName,
-                        String description,
-                        String photo,
-                        String language,
-                        String category) {
+    public BookResponse(Integer id, String title, String author, String description, String photo, String language, String category, long availableCopies) {
         this.id = id;
         this.title = title;
-        this.authorName = authorName;
+        this.author = author;
         this.description = description;
         this.photo = photo;
         this.language = language;
         this.category = category;
+        this.availableCopies = availableCopies;
     }
 
     public Integer getId() {
@@ -36,8 +32,8 @@ public class BookResponse {
         return title;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor() {
+        return author;
     }
 
     public String getDescription() {
@@ -52,7 +48,7 @@ public class BookResponse {
         return language;
     }
 
-    public String getCategory() {
-        return category;
+    public long getAvailableCopies() {
+        return availableCopies;
     }
 }

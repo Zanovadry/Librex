@@ -17,13 +17,46 @@ public class AppUserService {
     private final AppUserRepository userRepository;
     private final PermissionRepository permissionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final org.example.librex.database.reservation.ReservationRepository reservationRepository;
+    private final org.example.librex.database.waitlist.WaitlistRepository waitlistRepository;
 
     public AppUserService(AppUserRepository userRepository,
                           PermissionRepository permissionRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          org.example.librex.database.reservation.ReservationRepository reservationRepository,
+                          org.example.librex.database.waitlist.WaitlistRepository waitlistRepository) {
         this.userRepository = userRepository;
         this.permissionRepository = permissionRepository;
         this.passwordEncoder = passwordEncoder;
+        this.reservationRepository = reservationRepository;
+        this.waitlistRepository = waitlistRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public org.example.librex.database.users.dto.UserDetailsResponse getUserDetails(Integer userId) {
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        var reservations = reservationRepository.findByUser_IdAndReturnDateIsNull(userId).stream()
+                .map(r -> new org.example.librex.database.users.dto.UserReservationDto(
+                        r.getId(),
+                        r.getCopy().getId(),
+                        r.getCopy().getEdition().getTitle().getTitle(),
+                        r.getCopy().getInventoryNumber(),
+                        r.getExpectedReturnDate()
+                ))
+                .toList();
+
+        var waitlistItems = waitlistRepository.findByAppUser_IdAndActiveTrue(userId).stream()
+                .map(w -> new org.example.librex.database.users.dto.UserWaitlistDto(
+                        w.getWaitlistId(),
+                        w.getBookTitle().getTitle(),
+                        w.getPosition(),
+                        w.getCreateDate()
+                ))
+                .toList();
+
+        return new org.example.librex.database.users.dto.UserDetailsResponse(toResponse(user), reservations, waitlistItems);
     }
 
     @Transactional
@@ -74,6 +107,12 @@ public class AppUserService {
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         return toResponse(user);
+    }
+
+    public List<UserResponse> searchUsers(String query) {
+        return userRepository.searchUsers(query).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
 

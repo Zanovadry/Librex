@@ -19,11 +19,14 @@ public class BookTitle {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 2000)
     private String description;
 
-    @Column(name = "photo", length = 500)
+    @Column(name = "photo")
     private String photo;
+
+    @OneToMany(mappedBy = "title")
+    private java.util.Set<org.example.librex.database.books.edition.BookEdition> bookEditions = new java.util.HashSet<>();
 
     protected BookTitle() {
     }
@@ -72,6 +75,10 @@ public class BookTitle {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public java.util.Set<org.example.librex.database.books.edition.BookEdition> getBookEditions() {
+        return bookEditions;
     }
 }
 

@@ -27,12 +27,13 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public UserResponse me(Authentication authentication) {
+    public org.example.librex.database.users.dto.UserDetailsResponse me(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authenticated");
         }
 
         String username = authentication.getName();
-        return userService.findByUsername(username);
+        org.example.librex.database.users.dto.UserResponse user = userService.findByUsername(username);
+        return userService.getUserDetails(user.getId());
     }
 }

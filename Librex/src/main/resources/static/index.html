@@ -14,6 +14,8 @@
             --text: #f9fafb;
             --muted: #9ca3af;
             --danger: #ef4444;
+            --success: #22c55e;
+            --info: #3b82f6;
             --radius: 16px;
         }
 
@@ -290,9 +292,9 @@
             border: 1px solid rgba(239, 68, 68, 0.6);
         }
 
-        .success {
+        .success-message {
             font-size: 12px;
-            color: #22c55e;
+            color: var(--success);
             padding: 4px 8px;
             border-radius: 8px;
             background: rgba(22, 101, 52, 0.35);
@@ -458,9 +460,8 @@
             font-size: 14px;
         }
 
-        /* PROFILE MODAL */
-
-        #profile-modal-backdrop {
+        /* MODAL STYLES (for Profile and Book Details) */
+        .modal-backdrop {
             position: fixed;
             inset: 0;
             background: rgba(15, 23, 42, 0.7);
@@ -470,11 +471,11 @@
             z-index: 50;
         }
 
-        #profile-modal-backdrop.active {
+        .modal-backdrop.active {
             display: flex;
         }
 
-        #profile-modal {
+        .modal {
             width: 360px;
             max-width: 90vw;
             background: rgba(15, 23, 42, 0.98);
@@ -484,96 +485,99 @@
                     0 24px 60px rgba(0, 0, 0, 0.9),
                     0 0 0 1px rgba(148, 163, 184, 0.25);
             padding: 18px 18px 16px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .profile-main {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .profile-main-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 30% 30%, #f97316, #4f46e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            color: #020617;
-            border: 2px solid #020617;
-        }
-
-        .profile-main-text {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-        }
-
-        .profile-main-name {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .profile-main-username {
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        .profile-section {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(55, 65, 81, 0.8);
-        }
-
-        .profile-section-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-
-        .profile-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-top: 4px;
             gap: 12px;
         }
 
-        .profile-row span:first-child {
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-header .title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .modal-body {
+            font-size: 13px;
             color: var(--muted);
+            max-height: 70vh;
+            overflow-y: auto;
         }
-
-        .profile-row span:last-child {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .profile-footer {
-            margin-top: 10px;
+        .modal-footer {
             display: flex;
             justify-content: flex-end;
             gap: 8px;
         }
 
-        .btn-small {
-            padding: 6px 10px;
-            font-size: 12px;
+        /* BOOK DETAILS SPECIFIC */
+        #book-details-modal .book-cover-large {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #020617;
+            border-radius: 12px;
+            margin-bottom: 12px;
         }
+        #book-details-modal .book-description {
+            margin-top: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+        #book-details-modal .book-details-section {
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        #book-details-modal .book-details-section .section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        #book-details-modal .copy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        #book-details-modal .copy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-soft);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            font-size: 13px;
+        }
+        #book-details-modal .copy-item.unavailable {
+            opacity: 0.6;
+            background: #272c36;
+        }
+        #book-details-modal .copy-item .inventory-number {
+            font-weight: 600;
+            color: var(--text);
+        }
+        #book-details-modal .copy-item .status {
+            color: var(--success);
+            font-weight: 500;
+        }
+        #book-details-modal .copy-item.unavailable .status {
+            color: var(--danger);
+        }
+        #book-details-modal .waitlist-info {
+            text-align: center;
+            font-style: italic;
+            color: var(--muted);
+            margin-top: 12px;
+        }
+
 
         @media (max-width: 800px) {
             main {
@@ -601,6 +605,9 @@
             <span>Librex</span>
         </div>
         <div class="chip">Library • Prototype UI</div>
+        <button id="librarian-panel-btn" class="chip hidden" style="cursor: pointer; background: rgba(59, 130, 246, 0.2); color: #93c5fd; border-color: #3b82f6;">
+            Panel Bibliotekarza
+        </button>
     </header>
 
     <main>
@@ -706,10 +713,10 @@
 </div>
 
 <!-- PROFILE MODAL -->
-<div id="profile-modal-backdrop">
-    <div id="profile-modal">
-        <div class="profile-header">
-            <div>Twój profil</div>
+<div id="profile-modal-backdrop" class="modal-backdrop">
+    <div id="profile-modal" class="modal">
+        <div class="modal-header">
+            <div class="title">Twój profil</div>
             <button id="profile-close" class="btn btn-secondary btn-small">Zamknij</button>
         </div>
         <div class="profile-main">
@@ -730,18 +737,120 @@
                 <span id="profile-role">CUSTOMER</span>
             </div>
         </div>
-        <div class="profile-footer">
+
+        <div class="profile-section">
+            <div class="profile-section-title">Moje wypożyczenia</div>
+            <div id="profile-reservations-list" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                <!-- JS populated -->
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-section-title">Moje kolejki (Waitlist)</div>
+            <div id="profile-waitlist-list" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                 <!-- JS populated -->
+            </div>
+        </div>
+
+        <div class="modal-footer">
             <button id="logout-button" class="btn btn-secondary btn-small">Wyloguj</button>
+        </div>
+    </div>
+</div>
+
+<!-- BOOK DETAILS MODAL -->
+<div id="book-details-modal-backdrop" class="modal-backdrop">
+    <div id="book-details-modal" class="modal">
+        <div class="modal-header">
+            <div class="title" id="book-details-modal-title"></div>
+            <button id="book-details-close" class="btn btn-secondary btn-small">Zamknij</button>
+        </div>
+        <div class="modal-body">
+            <div class="book-cover-large" id="book-details-modal-cover"></div>
+            <div class="book-description" id="book-details-modal-description"></div>
+
+            <div id="book-details-available-section" class="book-details-section hidden">
+                <div class="section-title">Dostępne egzemplarze</div>
+                <div class="copy-list" id="book-details-copy-list"></div>
+            </div>
+
+            <div id="book-details-unavailable-section" class="book-details-section hidden">
+                <div class="section-title">Brak dostępnych egzemplarzy</div>
+                <div class="waitlist-info">Wszystkie egzemplarze tego tytułu są obecnie wypożyczone.</div>
+                <div class="modal-footer">
+                    <button id="join-waitlist-btn" class="btn btn-primary">Zapisz się na listę oczekujących</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LIBRARIAN MODAL -->
+<div id="librarian-modal-backdrop" class="modal-backdrop">
+    <div id="librarian-modal" class="modal" style="width: 500px;">
+        <div class="modal-header">
+            <div class="title">Panel Bibliotekarza</div>
+            <button id="librarian-close" class="btn btn-secondary btn-small">Zamknij</button>
+        </div>
+        <div class="modal-body">
+            <!-- Search Section -->
+            <div class="field">
+                <label>Szukaj użytkownika</label>
+                <div style="display: flex; gap: 8px;">
+                    <input id="lib-search-input" placeholder="Login lub email..." style="flex: 1;" />
+                    <button id="lib-search-btn" class="btn btn-primary btn-small">Szukaj</button>
+                </div>
+            </div>
+            
+            <div id="lib-search-results" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;"></div>
+
+            <!-- Selected User Details -->
+            <div id="lib-user-details" class="hidden" style="margin-top: 20px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 12px;">
+                <div class="section-title" style="font-weight: 600; margin-bottom: 8px;">Wypożyczenia użytkownika: <span id="lib-selected-user-name"></span></div>
+                <div id="lib-user-reservations" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- RETURN BOOK MODAL (Nested or separate) -->
+<div id="return-modal-backdrop" class="modal-backdrop" style="z-index: 60;">
+    <div id="return-modal" class="modal">
+        <div class="modal-header">
+            <div class="title">Zwrot książki</div>
+            <button id="return-close" class="btn btn-secondary btn-small">Anuluj</button>
+        </div>
+        <div class="modal-body">
+            <div style="margin-bottom: 12px;">
+                Zwracany egzemplarz: <span id="return-inventory-num" style="font-weight: 600;"></span>
+            </div>
+            <div class="field">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" id="return-damaged" style="width: auto;" />
+                    Książka uszkodzona
+                </label>
+            </div>
+            <div class="field hidden" id="return-damage-details-field">
+                <label>Opis uszkodzeń</label>
+                <input id="return-damage-desc" />
+            </div>
+            <div class="field hidden" id="return-damage-fee-field">
+                <label>Opłata za zniszczenie (PLN)</label>
+                <input id="return-damage-fee" type="number" step="0.01" value="0.00" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="confirm-return-btn" class="btn btn-primary">Potwierdź zwrot</button>
         </div>
     </div>
 </div>
 
 <script>
     // ======= KONFIGURACJA =======
-    const API_BASE = ""; // ten sam host / port, bo serwujesz index.html z Spring Boota
+    const API_BASE = "";
 
     let auth = null; // { username, password }
-    let currentUser = null;
+    let currentUser = null; // { id, username, email, role, firstname, surname }
 
     function setAuth(username, password) {
         auth = { username, password };
@@ -766,10 +875,42 @@
         container.innerHTML = "";
         if (!message) return;
         const div = document.createElement("div");
-        div.className = type === "error" ? "error" : "success";
+        div.className = type === "error" ? "error" : "success-message";
         div.textContent = message;
         container.appendChild(div);
     }
+    
+    function showGeneralMessage(message, type = "info") {
+        const container = document.getElementById("general-messages-container") || document.createElement("div");
+        if (!document.getElementById("general-messages-container")) {
+            container.id = "general-messages-container";
+            container.style.position = "fixed";
+            container.style.top = "20px";
+            container.style.right = "20px";
+            container.style.zIndex = "100";
+            container.style.maxWidth = "300px";
+            container.style.display = "flex";
+            container.style.flexDirection = "column";
+            container.style.gap = "10px";
+            document.body.appendChild(container);
+        }
+        
+        const div = document.createElement("div");
+        div.className = `message-${type}`;
+        div.style.padding = "10px 15px";
+        div.style.borderRadius = "8px";
+        div.style.backgroundColor = type === "error" ? "rgba(239, 68, 68, 0.8)" : (type === "success" ? "rgba(34, 197, 94, 0.8)" : "rgba(59, 130, 246, 0.8)");
+        div.style.color = "white";
+        div.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+        div.textContent = message;
+        
+        container.appendChild(div);
+
+        setTimeout(() => {
+            div.remove();
+        }, 5000);
+    }
+
 
     function switchAuthTab(tab) {
         const loginForm = document.getElementById("login-form");
@@ -800,7 +941,8 @@
         document.getElementById("auth-screen").classList.remove("hidden");
     }
 
-    function updateProfileUI(user) {
+    function updateProfileUI(userDetails) {
+        const user = userDetails.user;
         const initials =
             (user.firstname?.[0] || "") + (user.surname?.[0] || "");
         const upperInitials = initials.toUpperCase() || "U";
@@ -819,6 +961,51 @@
             "@" + user.username;
         document.getElementById("profile-email").textContent = user.email;
         document.getElementById("profile-role").textContent = user.role;
+        
+
+        const libBtn = document.getElementById("librarian-panel-btn");
+        if (user.role === 'ADMIN' || user.role === 'LIBRARIAN') {
+            libBtn.classList.remove("hidden");
+        } else {
+            libBtn.classList.add("hidden");
+        }
+
+
+        const resList = document.getElementById("profile-reservations-list");
+        resList.innerHTML = "";
+        if (userDetails.activeReservations && userDetails.activeReservations.length > 0) {
+            userDetails.activeReservations.forEach(res => {
+                const item = document.createElement("div");
+                item.className = "profile-row";
+                item.style.justifyContent = "flex-start";
+                item.style.flexDirection = "column";
+                item.style.gap = "2px";
+                item.innerHTML = `
+                    <div style="font-weight: 600; font-size: 13px;">${res.bookTitle}</div>
+                    <div style="font-size: 11px; color: var(--muted);">Do zwrotu: ${res.expectedReturnDate} ${res.overdue ? '<span style="color: var(--danger)">(PO TERMINIE)</span>' : ''}</div>
+                `;
+                resList.appendChild(item);
+            });
+        } else {
+            resList.innerHTML = '<div style="font-size: 12px; color: var(--muted); font-style: italic;">Brak aktywnych wypożyczeń.</div>';
+        }
+
+
+        const waitList = document.getElementById("profile-waitlist-list");
+        waitList.innerHTML = "";
+        if (userDetails.waitlistItems && userDetails.waitlistItems.length > 0) {
+            userDetails.waitlistItems.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "profile-row";
+                row.innerHTML = `
+                    <span>${item.bookTitle}</span>
+                    <span>Poz: ${item.position}</span>
+                `;
+                waitList.appendChild(row);
+            });
+        } else {
+            waitList.innerHTML = '<div style="font-size: 12px; color: var(--muted); font-style: italic;">Brak oczekujących.</div>';
+        }
     }
 
     async function fetchCurrentUser(showErrors = true) {
@@ -834,10 +1021,10 @@
                 return null;
             }
 
-            const user = await res.json();
-            currentUser = user;
-            updateProfileUI(user);
-            return user;
+            const userDetails = await res.json();
+            currentUser = userDetails.user;
+            updateProfileUI(userDetails);
+            return currentUser;
         } catch (e) {
             console.error(e);
             if (showErrors) showMessage("Błąd połączenia z backendem.", "error");
@@ -869,7 +1056,28 @@
             if (!res.ok) {
                 const text = await res.text();
                 console.error("Register error:", text);
-                showMessage("Rejestracja nie powiodła się (np. email/username zajęty).", "error");
+                
+                let displayMsg = "Rejestracja nie powiodła się.";
+                try {
+
+                    if (text.trim().startsWith("{")) {
+                        const errors = JSON.parse(text);
+
+                        const messages = Object.values(errors).join(", ");
+                        if (messages) {
+                            displayMsg = messages;
+                        }
+                    } else {
+
+                        if (text && text.length < 100 && !text.startsWith("<")) {
+                            displayMsg = text;
+                        }
+                    }
+                } catch (e) {
+
+                }
+                
+                showMessage(displayMsg, "error");
                 return false;
             }
 
@@ -921,15 +1129,18 @@
             const meta = document.createElement("div");
             meta.className = "book-meta";
 
-            const chip = document.createElement("div");
-            chip.className = "book-chip";
-            chip.textContent = book.language || "PL";
+            const availableChip = document.createElement("div");
+            availableChip.className = "book-chip";
+            availableChip.textContent = `Dostępne: ${book.availableCopies}`;
+            availableChip.style.color = book.availableCopies > 0 ? "var(--success)" : "var(--danger)";
+            availableChip.style.borderColor = book.availableCopies > 0 ? "var(--success)" : "var(--danger)";
+
 
             const tag = document.createElement("div");
             tag.className = "book-tag";
             tag.textContent = book.category || "Książka";
 
-            meta.appendChild(chip);
+            meta.appendChild(availableChip);
             meta.appendChild(tag);
 
             card.appendChild(cover);
@@ -938,11 +1149,7 @@
             card.appendChild(meta);
 
             card.addEventListener("click", () => {
-                // tu w przyszłości: przejście do strony szczegółów książki
-                alert(
-                    "Tu później przejdziesz do szczegółów książki o ID " +
-                    book.id
-                );
+                showBookDetailsModal(book);
             });
 
             grid.appendChild(card);
@@ -984,10 +1191,343 @@
         backdrop.classList.remove("active");
     }
 
+    // ====== BOOK DETAILS MODAL ======
+    async function showBookDetailsModal(book) {
+        if (!currentUser) {
+            showGeneralMessage("Zaloguj się, aby zobaczyć szczegóły książki.", "error");
+            return;
+        }
+
+        const backdrop = document.getElementById("book-details-modal-backdrop");
+        const modalTitle = document.getElementById("book-details-modal-title");
+        const modalCover = document.getElementById("book-details-modal-cover");
+        const modalDescription = document.getElementById("book-details-modal-description");
+        const availableSection = document.getElementById("book-details-available-section");
+        const unavailableSection = document.getElementById("book-details-unavailable-section");
+        const copyList = document.getElementById("book-details-copy-list");
+        const joinWaitlistBtn = document.getElementById("join-waitlist-btn");
+
+        modalTitle.textContent = book.title + " by " + book.author;
+        modalCover.style.backgroundImage = `url('${book.photo || "https://dummyimage.com/300x400/020617/94a3b8.png&text=Book"}')`;
+        modalDescription.textContent = book.description;
+
+        copyList.innerHTML = "";
+
+
+        try {
+            const res = await fetch(API_BASE + `/api/books/${book.id}/copies`, {
+                headers: {
+                    ...getAuthHeader(),
+                },
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                showGeneralMessage(`Błąd podczas pobierania egzemplarzy: ${errorText}`, "error");
+                return;
+            }
+            const copies = await res.json();
+
+            if (copies.length > 0 && book.availableCopies > 0) {
+                availableSection.classList.remove("hidden");
+                unavailableSection.classList.add("hidden");
+
+                copies.filter(copy => copy.available).forEach(copy => {
+                    const copyItem = document.createElement("div");
+                    copyItem.className = "copy-item";
+                    copyItem.innerHTML = `
+                        <div>
+                            <div class="inventory-number">Nr inwentarzowy: ${copy.inventoryNumber}</div>
+                            <div class="status">Stan: ${copy.condition} (Dostępny)</div>
+                        </div>
+                        <button class="btn btn-primary btn-small borrow-btn" data-copy-id="${copy.id}" data-user-id="${currentUser.id}">Wypożycz</button>
+                    `;
+                    copyList.appendChild(copyItem);
+                });
+                
+
+                document.querySelectorAll(".borrow-btn").forEach(btn => {
+                    btn.addEventListener("click", (e) => {
+                        const copyId = parseInt(e.target.dataset.copyId);
+                        const userId = parseInt(e.target.dataset.userId);
+                        borrowBook(copyId, userId, book.id);
+                        closeBookDetailsModal();
+                    });
+                });
+
+            } else {
+                availableSection.classList.add("hidden");
+                unavailableSection.classList.remove("hidden");
+                joinWaitlistBtn.onclick = () => {
+                    joinWaitlist(book.id, currentUser.id);
+                    closeBookDetailsModal();
+                };
+            }
+
+            backdrop.classList.add("active");
+
+        } catch (e) {
+            console.error("Error fetching book copies:", e);
+            showGeneralMessage("Błąd połączenia przy pobieraniu egzemplarzy.", "error");
+        }
+    }
+
+    function closeBookDetailsModal() {
+        const backdrop = document.getElementById("book-details-modal-backdrop");
+        backdrop.classList.remove("active");
+    }
+
+    async function borrowBook(copyId, userId, bookTitleId) {
+        try {
+            const res = await fetch(API_BASE + "/api/reservations/borrow", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader(),
+                },
+                body: JSON.stringify({ userId: userId, copyId: copyId, days: 14 }),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                showGeneralMessage(`Błąd wypożyczenia: ${text}`, "error");
+                return false;
+            }
+
+            showGeneralMessage("Książka wypożyczona pomyślnie!", "success");
+            fetchBooks();
+            return true;
+        } catch (e) {
+            console.error("Error borrowing book:", e);
+            showGeneralMessage("Błąd połączenia przy wypożyczaniu.", "error");
+            return false;
+        }
+    }
+
+    async function joinWaitlist(bookTitleId, userId) {
+        try {
+            const res = await fetch(API_BASE + "/api/waitlist/join", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader(),
+                },
+                body: JSON.stringify({ userId: userId, bookTitleId: bookTitleId }),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                showGeneralMessage(`Błąd zapisu do kolejki: ${text}`, "error");
+                return false;
+            }
+
+            showGeneralMessage("Zapisano do listy oczekujących!", "success");
+            return true;
+        } catch (e) {
+            console.error("Error joining waitlist:", e);
+            showGeneralMessage("Błąd połączenia przy zapisie do kolejki.", "error");
+            return false;
+        }
+    }
+
+    // ====== LIBRARIAN PANEL ======
+    
+    function openLibrarianModal() {
+        document.getElementById("librarian-modal-backdrop").classList.add("active");
+        document.getElementById("lib-search-input").focus();
+    }
+    
+    function closeLibrarianModal() {
+        document.getElementById("librarian-modal-backdrop").classList.remove("active");
+    }
+
+    async function searchUsers(query) {
+        if (!query || query.length < 2) return;
+        
+        try {
+            const res = await fetch(API_BASE + `/api/librarian/users/search?query=${encodeURIComponent(query)}`, {
+                headers: { ...getAuthHeader() }
+            });
+            if (res.ok) {
+                const users = await res.json();
+                renderUserSearchResults(users);
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    function renderUserSearchResults(users) {
+        const container = document.getElementById("lib-search-results");
+        container.innerHTML = "";
+        
+        if (users.length === 0) {
+            container.innerHTML = '<div style="font-size: 13px; color: var(--muted);">Brak wyników.</div>';
+            return;
+        }
+
+        users.forEach(u => {
+            const div = document.createElement("div");
+            div.className = "profile-row";
+            div.style.cursor = "pointer";
+            div.style.padding = "8px";
+            div.style.background = "var(--bg-soft)";
+            div.style.borderRadius = "8px";
+            div.innerHTML = `
+                <span style="font-weight: 600;">${u.email}</span>
+                <span style="font-size: 12px; color: var(--muted);">@${u.username}</span>
+            `;
+            div.onclick = () => loadLibrarianUserDetails(u.id, u.email);
+            container.appendChild(div);
+        });
+    }
+
+    let selectedReturnCopyId = null;
+
+    async function loadLibrarianUserDetails(userId, email) {
+        document.getElementById("lib-selected-user-name").textContent = email;
+        document.getElementById("lib-user-details").classList.remove("hidden");
+        const container = document.getElementById("lib-user-reservations");
+        container.innerHTML = '<div style="font-size: 12px;">Ładowanie...</div>';
+
+        try {
+            const res = await fetch(API_BASE + `/api/librarian/users/${userId}`, {
+                headers: { ...getAuthHeader() }
+            });
+            if (res.ok) {
+                const details = await res.json();
+                renderLibrarianUserReservations(details.activeReservations);
+            }
+        } catch (e) {
+            container.innerHTML = '<div style="color: var(--danger);">Błąd pobierania danych.</div>';
+        }
+    }
+
+    function renderLibrarianUserReservations(reservations) {
+        const container = document.getElementById("lib-user-reservations");
+        container.innerHTML = "";
+
+        if (!reservations || reservations.length === 0) {
+            container.innerHTML = '<div style="font-style: italic; color: var(--muted);">Brak aktywnych wypożyczeń.</div>';
+            return;
+        }
+
+        reservations.forEach(res => {
+            const div = document.createElement("div");
+            div.className = "profile-row";
+            div.style.background = "rgba(15, 23, 42, 0.5)";
+            div.style.padding = "8px";
+            div.style.borderRadius = "8px";
+            div.innerHTML = `
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 600;">${res.inventoryNumber} - ${res.bookTitle}</span>
+                    <span style="font-size: 11px; color: var(--muted);">Termin: ${res.expectedReturnDate}</span>
+                </div>
+                <button class="btn btn-primary btn-small return-btn" data-copy-id="${res.copyId}" data-inv="${res.inventoryNumber}">Zwróć</button>
+            `;
+            container.appendChild(div);
+        });
+
+        document.querySelectorAll(".return-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const copyId = e.target.dataset.copyId;
+                const inv = e.target.dataset.inv;
+                openReturnModal(copyId, inv);
+            });
+        });
+    }
+
+    // ====== RETURN MODAL LOGIC ======
+    
+    function openReturnModal(copyId, inventoryNumber) {
+        selectedReturnCopyId = copyId;
+        document.getElementById("return-inventory-num").textContent = inventoryNumber;
+        document.getElementById("return-damaged").checked = false;
+        document.getElementById("return-damage-desc").value = "";
+        document.getElementById("return-damage-fee").value = "0.00";
+        toggleDamageFields(false);
+        document.getElementById("return-modal-backdrop").classList.add("active");
+    }
+
+    function closeReturnModal() {
+        document.getElementById("return-modal-backdrop").classList.remove("active");
+        selectedReturnCopyId = null;
+    }
+
+    function toggleDamageFields(show) {
+        const descField = document.getElementById("return-damage-details-field");
+        const feeField = document.getElementById("return-damage-fee-field");
+        if (show) {
+            descField.classList.remove("hidden");
+            feeField.classList.remove("hidden");
+        } else {
+            descField.classList.add("hidden");
+            feeField.classList.add("hidden");
+        }
+    }
+
+    async function submitReturn() {
+        if (!selectedReturnCopyId) return;
+
+        const isDamaged = document.getElementById("return-damaged").checked;
+        const details = document.getElementById("return-damage-desc").value;
+        const fee = parseFloat(document.getElementById("return-damage-fee").value) || 0;
+
+        const data = {
+            copyId: parseInt(selectedReturnCopyId),
+            damaged: isDamaged,
+            damageDetails: isDamaged ? details : null,
+            damageFee: isDamaged ? fee : 0
+        };
+
+        try {
+            const res = await fetch(API_BASE + "/api/reservations/return", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader(),
+                },
+                body: JSON.stringify(data),
+            });
+
+            const text = await res.text();
+            if (!res.ok) {
+                showGeneralMessage(`Błąd zwrotu: ${text}`, "error");
+            } else {
+                showGeneralMessage(`Zwrot przyjęty. ${text}`, "success");
+                closeReturnModal();
+
+                const email = document.getElementById("lib-selected-user-name").textContent;
+
+
+                document.getElementById("lib-user-reservations").innerHTML = "<i>Odśwież, aby zobaczyć zmiany.</i>";
+            }
+        } catch (e) {
+            console.error(e);
+            showGeneralMessage("Błąd połączenia.", "error");
+        }
+    }
+
     // ====== INIT ======
 
     document.addEventListener("DOMContentLoaded", async () => {
-        // Tab switching
+
+
+
+        document.getElementById("librarian-panel-btn").addEventListener("click", openLibrarianModal);
+        document.getElementById("librarian-close").addEventListener("click", closeLibrarianModal);
+        
+        document.getElementById("lib-search-btn").addEventListener("click", () => {
+            searchUsers(document.getElementById("lib-search-input").value);
+        });
+
+
+        document.getElementById("return-close").addEventListener("click", closeReturnModal);
+        document.getElementById("return-damaged").addEventListener("change", (e) => {
+            toggleDamageFields(e.target.checked);
+        });
+        document.getElementById("confirm-return-btn").addEventListener("click", submitReturn);
+
+
+
         document.querySelectorAll(".tab").forEach((tab) => {
             tab.addEventListener("click", () => {
                 switchAuthTab(tab.dataset.tab);
@@ -1001,7 +1541,7 @@
             .getElementById("go-login")
             .addEventListener("click", () => switchAuthTab("login"));
 
-        // Login form
+
         document
             .getElementById("login-form")
             .addEventListener("submit", async (e) => {
@@ -1017,15 +1557,16 @@
                 }
 
                 try {
-                    showMessage("Logowanie...", "success");
+                    showMessage("Logowanie...", "info");
                     await login(username, password);
                     showMessage("", "");
+                    showGeneralMessage(`Zalogowano jako ${currentUser.username}! Rola: ${currentUser.role}`, "success");
                 } catch (err) {
                     showMessage("Niepoprawne dane logowania.", "error");
                 }
             });
 
-        // Register form
+
         document
             .getElementById("register-form")
             .addEventListener("submit", async (e) => {
@@ -1061,12 +1602,14 @@
                 }
             });
 
-        // Profile button
+
         document
             .getElementById("profile-button")
             .addEventListener("click", () => {
                 if (currentUser) {
                     openProfileModal();
+                } else {
+                    showGeneralMessage("Zaloguj się, aby zobaczyć profil.", "error");
                 }
             });
 
@@ -1088,9 +1631,23 @@
                 clearAuth();
                 closeProfileModal();
                 showAuthScreen();
+                showGeneralMessage("Wylogowano pomyślnie.", "info");
             });
 
-        // Auto login (jeśli są dane w localStorage)
+
+        document
+            .getElementById("book-details-close")
+            .addEventListener("click", closeBookDetailsModal);
+        document
+            .getElementById("book-details-modal-backdrop")
+            .addEventListener("click", (e) => {
+                if (e.target.id === "book-details-modal-backdrop") {
+                    closeBookDetailsModal();
+                }
+            });
+
+
+
         const stored = localStorage.getItem("librexAuth");
         if (stored) {
             try {
@@ -1101,6 +1658,7 @@
                     if (user) {
                         showMainScreen();
                         await fetchBooks();
+                        showGeneralMessage(`Zalogowano automatycznie jako ${currentUser.username}! Rola: ${currentUser.role}`, "success");
                     } else {
                         clearAuth();
                     }

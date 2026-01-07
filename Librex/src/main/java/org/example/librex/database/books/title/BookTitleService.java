@@ -37,12 +37,14 @@ public class BookTitleService {
         return toResponse(saved);
     }
 
+    @Transactional(readOnly = true)
     public List<BookResponse> findAll() {
-        return bookTitleRepository.findAll().stream()
+        return bookTitleRepository.findAllWithDetails().stream()
                 .map(this::toResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public BookResponse findById(Integer id) {
         BookTitle bookTitle = bookTitleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
@@ -67,14 +69,55 @@ public class BookTitleService {
 
     @Transactional
     public void delete(Integer id) {
-        bookTitleRepository.deleteById(id);
+        bookTitleRepository.delete(bookTitleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found")));
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.List<org.example.librex.database.books.copy.dto.BookCopyResponse> findCopiesByTitleId(Integer titleId) {
+        BookTitle bookTitle = bookTitleRepository.findById(titleId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        return bookTitle.getBookEditions().stream()
+                .flatMap(edition -> edition.getCopies().stream())
+                .map(this::toCopyResponse)
+                .toList();
+    }
+
+    private org.example.librex.database.books.copy.dto.BookCopyResponse toCopyResponse(org.example.librex.database.books.copy.BookCopy copy) {
+        return new org.example.librex.database.books.copy.dto.BookCopyResponse(
+                copy.getId(),
+                copy.getInventoryNumber(),
+                copy.isAvailable(),
+                copy.getCondition()
+        );
     }
 
     private BookResponse toResponse(BookTitle entity) {
         String authorName = entity.getAuthor().getFirstname() + " " + entity.getAuthor().getSurname();
 
-        // na razie nie masz okładki, języka, kategorii na poziomie tytułu;
-        // zostawiamy null / placeholder, żeby pasowało do frontu
+        java.util.Set<org.example.librex.database.books.edition.BookEdition> editions = entity.getBookEditions();
+        if (editions == null) {
+            System.out.println("DEBUG: Title " + entity.getTitle() + " has NULL editions list");
+            editions = java.util.Set.of();
+        } else {
+            System.out.println("DEBUG: Title " + entity.getTitle() + " has " + editions.size() + " editions");
+            for (var ed : editions) {
+                 var copies = ed.getCopies();
+                 if (copies == null) {
+                     System.out.println("  - Edition " + ed.getId() + " has NULL copies");
+                 } else {
+                     System.out.println("  - Edition " + ed.getId() + " has " + copies.size() + " copies");
+                 }
+            }
+        }
+
+        long availableCopiesCount = editions.stream()
+                .flatMap(edition -> (edition.getCopies() != null ? edition.getCopies().stream() : java.util.stream.Stream.empty()))
+                .filter(org.example.librex.database.books.copy.BookCopy::isAvailable)
+                .count();
+
+
         return new BookResponse(
                 entity.getId(),
                 entity.getTitle(),
@@ -82,7 +125,8 @@ public class BookTitleService {
                 entity.getDescription(),
                 entity.getPhoto(),
                 null,      // language
-                null       // category
+                null,      // category
+                availableCopiesCount
         );
     }
 }

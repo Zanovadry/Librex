@@ -18,26 +18,26 @@ public class BookTitleController {
         this.bookTitleService = bookTitleService;
     }
 
-    // LISTA KSIĄŻEK – pod kafelki
+
     @GetMapping
     public List<BookResponse> findAll() {
         return bookTitleService.findAll();
     }
 
-    // SZCZEGÓŁY KONKRETNEJ KSIĄŻKI
+
     @GetMapping("/{id}")
     public BookResponse findById(@PathVariable Integer id) {
         return bookTitleService.findById(id);
     }
 
-    // UTWORZENIE KSIĄŻKI – tylko ADMIN / LIBRARIAN
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('LIBRARIAN')")
     @PostMapping
     public BookResponse create(@Valid @RequestBody BookRequest request) {
         return bookTitleService.create(request);
     }
 
-    // AKTUALIZACJA KSIĄŻKI
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('LIBRARIAN')")
     @PutMapping("/{id}")
     public BookResponse update(@PathVariable Integer id,
@@ -45,10 +45,16 @@ public class BookTitleController {
         return bookTitleService.update(id, request);
     }
 
-    // USUNIĘCIE KSIĄŻKI
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         bookTitleService.delete(id);
+    }
+
+
+    @GetMapping("/{titleId}/copies")
+    public java.util.List<org.example.librex.database.books.copy.dto.BookCopyResponse> getCopiesForTitle(@PathVariable Integer titleId) {
+        return bookTitleService.findCopiesByTitleId(titleId);
     }
 }

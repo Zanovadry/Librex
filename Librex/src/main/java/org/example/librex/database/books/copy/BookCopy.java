@@ -19,7 +19,7 @@ public class BookCopy {
     @JoinColumn(name = "edition_id", nullable = false)
     private BookEdition edition;
 
-    @Column(name = "condition", length = 100)
+    @Column(name = "\"condition\"", length = 100)
     private String condition;
 
     @Column(name = "defects")

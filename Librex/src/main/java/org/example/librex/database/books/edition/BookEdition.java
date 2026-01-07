@@ -40,11 +40,14 @@ public class BookEdition {
     @Column(name = "is_hard_cover")
     private boolean hardCover;
 
-    @Column(name = "value", precision = 10, scale = 2)
+    @Column(name = "\"value\"", precision = 10, scale = 2)
     private BigDecimal value;
 
     @Column(name = "notes")
     private String notes;
+
+    @OneToMany(mappedBy = "edition")
+    private java.util.Set<org.example.librex.database.books.copy.BookCopy> copies = new java.util.HashSet<>();
 
     protected BookEdition() {
     }
@@ -143,6 +146,10 @@ public class BookEdition {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public java.util.Set<org.example.librex.database.books.copy.BookCopy> getCopies() {
+        return copies;
     }
 }
 
