@@ -20,7 +20,7 @@ public class NotificationService {
         this.appUserRepository = userRepository;
     }
 
-
+    //Creates custom titled notification
     @Transactional
     public void createNotification(
             Integer userId,
