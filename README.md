@@ -1,17 +1,108 @@
 # Librex – system do obsługi biblioteki (Backend)
 
 Ten projekt to backend systemu bibliotecznego realizowanego w ramach laboratoriów AGH.  
-Całość została zbudowana w **Spring Boot + PostgreSQL** i spełnia wymagania modułu M1:
+Całość została zbudowana w **Spring Boot + PostgreSQL** i spełnia wymagania modułu M1 + M2:
 
+M1:
 - pełny model obiektowy + bazodanowy,
 - rejestracja użytkownika,
 - autentykacja i autoryzacja,
 - operacje CRUD na użytkownikach,
 - role systemowe (CUSTOMER, LIBRARIAN, ADMIN).
 
-Poprzednia wersja projektu była szkicem — ta wersja stanowi już solidną bazę pod kolejne moduły: książki, wypożyczenia, kolejki, statystyki.
+M2:
+- operacje CRUD na książkach
+- wypożyczanie książki
+- rezerwacje
+- powiadomienia
+- recenzje
 
 ---
+
+# Endpointy dostępne w API
+
+## Auth (publiczne)
+GET  /api/auth/me  
+POST /api/auth/register
+
+## Użytkownicy (ADMIN / LIBRARIAN)
+GET    /api/users  
+GET    /api/users/{id}  
+PUT    /api/users/{id}
+DELETE /api/users/{id}
+
+## Książki (BookTitle)
+GET    /api/books  
+POST   /api/books
+GET    /api/books/{id}    
+PUT    /api/books/{id}  
+DELETE /api/books/{id}
+GET    /api/books/{titleId}/copies
+
+## Autorzy
+GET    /api/authors  
+POST   /api/authors  
+GET    /api/authors/{id}  
+PUT    /api/authors/{id}  
+DELETE /api/authors/{id}
+
+## Recenzje
+POST /api/reviews  
+GET  /api/reviews/title/{titleId}  
+GET  /api/reviews/user  
+GET  /api/reviews/user/title/{titleId}
+
+## Powiadomienia
+GET   /api/notifications  
+PATCH /api/notifications/{id}
+
+## Wypożyczenia (Reservations)
+POST /api/reservations/borrow  
+POST /api/reservations/return
+
+## Kolejka oczekujących (Waitlist)
+POST /api/waitlist/join
+
+## Panel bibliotekarza
+GET /api/librarian/users/search  
+GET /api/librarian/users/{userId}
+
+---
+
+# Jak uruchomić projekt
+
+## Wymagania
+- Java 21+
+- IntelliJ IDEA / Gradle 8+
+
+Wystarczy pobrać pliki projektu i uruchomić go, np. za pomocą Intellij\
+Aplikacja wraz z frontendem będzie wówczas dostępna pod adresem `http://localhost:8080/index.html`
+> **Nie wszystkie endpointy są zaimplementowane do frontendu**
+
+
+# Nowości dla M2
+
+- Baza jest postawiona online `supabase.com`, nie trzeba nic konfigurować lokalnie
+- Poprawione logowanie i tworzenie konta
+- Stworzone dodatkowe CRUD
+    - Książki
+    - Autorzy
+    - Wypożyczanie
+    - Zapisywanie na waitlistę
+    - Zarządzanie użytkownikami
+    - Powiadomienia
+    - Opinie
+- Przejrzysty frontend
+- Zaaktualizowany schemat bazy danych
+    - Tabela `Notification`
+    - Tabela `Rewiev`
+
+
+<img width="1470" height="1024" alt="Librex-2026-01-09_16-23" src="https://github.com/user-attachments/assets/b4911c63-88c1-452a-b44d-3e222b4f0b2f" />
+
+---
+
+# !!!PONIŻEJ STARA DOKUMENTACJA (do M1)!!!
 
 # 1. Co było wcześniej
 
@@ -204,43 +295,4 @@ Testy działają na tej samej bazie (PostgreSQL), a nie na H2.
 <img width="1221" height="683" alt="obraz" src="https://github.com/user-attachments/assets/88db3d94-5f31-4b13-99f2-a4fe743ad124" />
 
 
----
 
-# 6. Jak uruchomić projekt
-
-## Wymagania
-- Java 21+
-- PostgreSQL 14+
-- IntelliJ IDEA / Gradle 8+
-
-## Krok 1 — utwórz bazę
-
-```sql
-CREATE DATABASE librex;
-
-## Krok 2 — ustaw dane w application.properties
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/librex
-spring.datasource.username=postgres
-spring.datasource.password=YOUR_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-## Krok 3 — uruchom
-
-./gradlew bootRun
-
----
-
-# 6. Endpointy dostępne w API
-
-## Rejestracja (publiczna)
-
-POST /api/auth/register
-
-## Operacje na użytkownikach (ADMIN / LIBRARIAN)
-
-GET    /api/users
-GET    /api/users/{id}
-PUT    /api/users/{id}     (ADMIN)
-DELETE /api/users/{id}     (ADMIN)
