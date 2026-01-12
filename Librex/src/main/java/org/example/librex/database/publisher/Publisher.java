@@ -6,7 +6,7 @@ import org.example.librex.database.dictionaries.country.Country;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "publisher")
+@Table(name = "publishers")
 public class Publisher {
 
     @Id
@@ -21,8 +21,8 @@ public class Publisher {
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;   // można później zmienić na @ManyToOne Country
+    @JoinColumn(name = "country_id")
+    private Country country;
 
     @Column(name = "email", length = 100, unique = true)
     private String email;
@@ -36,14 +36,12 @@ public class Publisher {
     protected Publisher() {
     }
 
-    public Publisher(Integer publisherId,
-                     String name,
+    public Publisher(String name,
                      String address,
                      Country country,
                      String email,
                      String webpage,
                      LocalDate foundationDate) {
-        this.publisherId = publisherId;
         this.name = name;
         this.address = address;
         this.country = country;

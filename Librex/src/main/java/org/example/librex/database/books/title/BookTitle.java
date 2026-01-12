@@ -2,7 +2,6 @@ package org.example.librex.database.books.title;
 
 import jakarta.persistence.*;
 import org.example.librex.database.author.Author;
-import org.example.librex.database.users.AppUser;
 
 @Entity
 @Table(name = "book_title")
@@ -18,21 +17,28 @@ public class BookTitle {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private Author author;   // zakładam, że autor to AppUser
+    private Author author;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", length = 2000)
     private String description;
+
+    @Column(name = "photo")
+    private String photo;
+
+    @OneToMany(mappedBy = "title")
+    private java.util.Set<org.example.librex.database.books.edition.BookEdition> bookEditions = new java.util.HashSet<>();
 
     protected BookTitle() {
     }
 
     public BookTitle(String title,
                      Author author,
-                     String description) {
+                     String description,
+                     String photo) {
         this.title = title;
         this.author = author;
         this.description = description;
+        this.photo = photo;
     }
 
     public Integer getId() {
@@ -51,6 +57,10 @@ public class BookTitle {
         return description;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -61,6 +71,14 @@ public class BookTitle {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public java.util.Set<org.example.librex.database.books.edition.BookEdition> getBookEditions() {
+        return bookEditions;
     }
 }
 

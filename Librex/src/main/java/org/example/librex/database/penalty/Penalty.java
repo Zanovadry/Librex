@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "penalty")
+@Table(name = "penalties")
 public class Penalty {
 
     @Id
@@ -15,8 +15,8 @@ public class Penalty {
     @Column(name = "penalty_id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id", nullable = false, unique = true)
     private Reservation reservation;
 
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
@@ -27,6 +27,9 @@ public class Penalty {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "is_paid", nullable = false)
+    private boolean paid = false;
 
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
@@ -44,6 +47,7 @@ public class Penalty {
         this.amount = amount;
         this.daysLate = daysLate;
         this.createdAt = createdAt;
+        this.paid = paid;
         this.paidAt = paidAt;
     }
 

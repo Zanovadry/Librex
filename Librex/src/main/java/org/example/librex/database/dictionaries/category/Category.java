@@ -3,7 +3,7 @@ package org.example.librex.database.dictionaries.category;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "category_dict")
+@Table(name = "categories_dict")
 public class Category {
 
     @Id
@@ -12,11 +12,11 @@ public class Category {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    //TODO: name czy category_name?
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private CategoryName name;
 
-    protected Category() {}
+    protected Category() {
+    }
 
     public Category(CategoryName name) {
         this.name = name;

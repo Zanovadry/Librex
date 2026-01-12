@@ -1,0 +1,240 @@
+### utwórz książkę (najpierw musisz mieć autora o ID 1)
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Wiedźmin: Ostatnie życzenie",
+  "authorId": 1,
+  "description": "Pierwszy tom opowiadań o Geralcie z Rivii."
+}
+###
+
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Metro 2033",
+  "authorId": 1,
+  "description": "Post-apokaliptyczna powieść Glukhovsky'ego",
+  "photo": "https://metro2033.pl/wp-content/themes/metro/images/metro2033_series.jpg"
+}
+
+
+### 2
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Wiedźmin: Miecz przeznaczenia",
+  "authorId": 1,
+  "description": "Drugi zbiór opowiadań o wiedźminie.",
+  "photo": "https://image.ceneostatic.pl/data/products/32692743/i-miecz-przeznaczenia-wiedzmin-tom-2.jpg"
+}
+
+### 3
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Pan Lodowego Ogrodu",
+  "authorId": 1,
+  "description": "Epicka saga science-fantasy Jarosława Grzędowicza.",
+  "photo": "https://ecsmedia.pl/c/pan-lodowego-ogrodu-tom-1-b-iext197554377.jpg"
+}
+
+
+### 5
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Metro 2034",
+  "authorId": 1,
+  "description": "Kontynuacja cyklu Metro.",
+  "photo": "https://ecsmedia.pl/c/uniwersum-metro-2033-metro-2034-b-iext196951854.jpg"
+}
+
+### 6
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Metro 2035",
+  "authorId": 1,
+  "description": "Zwieńczenie trylogii Metro.",
+  "photo": "https://image.ceneostatic.pl/data/products/40508131/p-metro-2035.jpg"
+}
+
+### 7
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Hobbit, czyli tam i z powrotem",
+  "authorId": 1,
+  "description": "Klasyczna powieść J.R.R. Tolkiena.",
+  "photo": "https://bonito.pl/cache/9/d84469b-hobbit-czyli-tam-i-z_800.webp"
+}
+
+### 8
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Władca Pierścieni: Drużyna Pierścienia",
+  "authorId": 1,
+  "description": "Pierwszy tom trylogii.",
+  "photo": "https://image.bilety24.pl/nf_repertoire_big/dealer-default/1501/-57-1767091495.jpg"
+}
+
+### 9
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Władca Pierścieni: Dwie Wieże",
+  "authorId": 1,
+  "description": "Drugi tom trylogii.",
+  "photo": "https://esensja.pl/obrazki/plakaty/294683_A2901Wladca_Pierscieni__Dwie_Wieze.jpg"
+}
+
+### 10
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Władca Pierścieni: Powrót Króla",
+  "authorId": 1,
+  "description": "Finał trylogii.",
+  "photo": "https://fwcdn.pl/fpo/18/41/11841/7494142_1.3.jpg"
+}
+
+### 11
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Diuna",
+  "authorId": 1,
+  "description": "Klasyka science-fiction Franka Herberta.",
+  "photo": "https://atkcdn.audioteka.com/cc/eb/diuna/1322.jpg?auto=format&w=500"
+}
+
+### 12
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Diuna: Mesjasz Diuny",
+  "authorId": 1,
+  "description": "Druga część cyklu Diuna.",
+  "photo": "https://ecsmedia.pl/c/mesjasz-diuny-kroniki-diuny-tom-2-b-iext198461367.jpg"
+}
+
+### 13
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Harry Potter i Kamień Filozoficzny",
+  "authorId": 1,
+  "description": "Pierwsza część serii o młodym czarodzieju.",
+  "photo": "https://fwcdn.pl/fpo/05/71/30571/7529392_1.8.webp"
+}
+
+### 14
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Harry Potter i Komnata Tajemnic",
+  "authorId": 1,
+  "description": "Druga część przygód Harry'ego.",
+  "photo": "https://image.ceneostatic.pl/data/products/208726/i-harry-potter-i-komnata-tajemnic.jpg"
+}
+
+### 15
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Harry Potter i Więzień Azkabanu",
+  "authorId": 1,
+  "description": "Trzecia część cyklu.",
+  "photo": "https://www.mediarodzina.pl/mrcore/uploads/2018/12/harry_potter_i_wiezien_azkabanu_duddle-1.jpg"
+}
+
+### 16
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Krzyżacy",
+  "authorId": 1,
+  "description": "Powieść historyczna Henryka Sienkiewicza.",
+  "photo": "https://antykwariat-torun.pl/environment/cache/images/productGfx_187213_500_500/krzyzacy-1.jpg"
+}
+
+### 17
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Quo Vadis",
+  "authorId": 1,
+  "description": "Nagrodzona Noblem powieść historyczna.",
+  "photo": "https://ecsmedia.pl/c/quo-vadis-b-iext199578739.jpg"
+}
+
+### 18
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Lalka",
+  "authorId": 1,
+  "description": "Powieść Bolesława Prusa o losach Stanisława Wokulskiego.",
+  "photo": "https://fwcdn.pl/fpo/76/28/10057628/8137256.3.jpg"
+}
+
+### 19
+POST http://localhost:8080/api/books
+Authorization: Basic admin Admin123!
+Content-Type: application/json
+
+{
+  "title": "Zbrodnia i kara",
+  "authorId": 1,
+  "description": "Klasyka literatury Dostojewskiego.",
+  "photo": "https://ecsmedia.pl/c/zbrodnia-i-kara-b-iext196982673.jpg"
+}
+
+### 20
+POST http://localhost:8080/api/books
+Authorization: Basic janek SuperTajneHaslo1
+Content-Type: application/json
+
+{
+  "title": "Mistrz i Małgorzata",
+  "authorId": 1,
+  "description": "Powieść Michaiła Bułhakowa.",
+  "photo": "https://s.lubimyczytac.pl/upload/books/5166000/5166174/1225756-170x243.jpg"
+}

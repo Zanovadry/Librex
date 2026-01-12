@@ -1,14 +1,13 @@
 package org.example.librex.database.dictionaries.language;
 
-
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "language_dict")
+@Table(name = "languages_dict")
 public class Language {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id")
     private Integer id;
 
@@ -16,7 +15,8 @@ public class Language {
     @Column(name = "language", nullable = false, unique = true, length = 50)
     private LanguageName name;
 
-    protected Language() {}
+    protected Language() {
+    }
 
     public Language(LanguageName name) {
         this.name = name;

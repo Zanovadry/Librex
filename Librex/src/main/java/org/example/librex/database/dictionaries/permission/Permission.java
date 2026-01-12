@@ -3,7 +3,7 @@ package org.example.librex.database.dictionaries.permission;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "permission_dict")
+@Table(name = "permissions_dict")
 public class Permission {
 
     @Id

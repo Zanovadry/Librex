@@ -3,7 +3,7 @@ package org.example.librex.database.dictionaries.country;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "country_dict")
+@Table(name = "countries_dict")
 public class Country {
 
     @Id
