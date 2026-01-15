@@ -71,7 +71,7 @@ public class ReservationService {
 
 
         int days = (request.getDays() != null && request.getDays() > 0) ? request.getDays() : 14;
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         LocalDate expectedReturn = LocalDate.now().plusDays(days);
 
         Reservation reservation = new Reservation(
@@ -80,7 +80,6 @@ public class ReservationService {
                 now,
                 expectedReturn,
                 null,
-                false,
                 null
         );
 
@@ -107,7 +106,6 @@ public class ReservationService {
         reservation.setReturnDate(today);
 
 
-        reservation.setDamaged(request.isDamaged());
         reservation.setDamageDetails(request.getDamageDetails());
 
 
@@ -144,7 +142,7 @@ public class ReservationService {
         BookCopy copy = reservation.getCopy();
         copy.setAvailable(true);
         
-        if (request.isDamaged()) {
+        if (request.getDamageDetails() != null) {
 
             String oldCondition = copy.getCondition() != null ? copy.getCondition() : "";
             copy.setCondition(oldCondition + " (Damaged: " + request.getDamageDetails() + ")");
@@ -162,7 +160,7 @@ public class ReservationService {
         }
 
         if (!queue.isEmpty()) {
-            Waitlist nextPerson = queue.get(0);
+            Waitlist nextPerson = queue.getFirst();
             message.append(" ATTENTION: User ").append(nextPerson.getAppUser().getEmail())
                    .append(" is waiting for this title (Position 1).");
 
@@ -183,7 +181,7 @@ public class ReservationService {
                 r.getUser().getEmail(),
                 r.getCopy().getEdition().getTitle().getTitle(),
                 r.getCopy().getInventoryNumber(),
-                r.getCreateDate().toLocalDate(),
+                r.getCreateDate(),
                 r.getExpectedReturnDate(),
                 r.getReturnDate()
         );

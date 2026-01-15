@@ -8,8 +8,6 @@ public class ReturnRequest {
     @NotNull
     private Integer copyId;
 
-    private boolean damaged;
-
     private String damageDetails;
 
     // Kwota kary za zniszczenie (opcjonalna, np. 0 jeśli brak zniszczeń)
@@ -21,14 +19,6 @@ public class ReturnRequest {
 
     public void setCopyId(Integer copyId) {
         this.copyId = copyId;
-    }
-
-    public boolean isDamaged() {
-        return damaged;
-    }
-
-    public void setDamaged(boolean damaged) {
-        this.damaged = damaged;
     }
 
     public String getDamageDetails() {
