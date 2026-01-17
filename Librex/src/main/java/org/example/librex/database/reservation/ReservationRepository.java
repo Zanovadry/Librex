@@ -30,6 +30,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
       """, nativeQuery = true)
     ReservationStatsRow getStatsBetweenDates(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
+    @Query(value = """
+        SELECT
+            COUNT(DISTINCT user_id) as total
+        FROM reservations
+        WHERE create_date >= current_date - interval '1' year
+        """, nativeQuery = true)
+    Integer getActiveUsersCount();
+
     List<Reservation> findByUser_IdAndReturnDateIsNull(Integer userId);
 
 }

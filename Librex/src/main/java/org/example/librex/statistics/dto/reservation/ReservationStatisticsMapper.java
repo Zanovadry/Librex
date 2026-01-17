@@ -1,7 +1,6 @@
-package org.example.librex.statistics.dto;
+package org.example.librex.statistics.dto.reservation;
 
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -16,17 +15,23 @@ public class ReservationStatisticsMapper {
             LocalDate periodFrom,
             LocalDate periodTo
     ) {
+        Integer safeTotal = totalAmount != null ? totalAmount : 0;
+        Integer safeDamaged = damagedBooksCount != null ? damagedBooksCount : 0;
+        Integer safeLate = lateReturnsCount != null ? lateReturnsCount : 0;
+
         return new ReservationStatisticsResponse(
-                totalAmount != null ? totalAmount: 0,
-                calculatePercentage(damagedBooksCount, totalAmount),
-                calculatePercentage(lateReturnsCount, totalAmount),
+                safeTotal,
+                safeDamaged,
+                safeLate,
+                calculatePercentage(safeDamaged, safeTotal),
+                calculatePercentage(safeLate, safeTotal),
                 periodFrom,
                 periodTo
         );
     }
 
     private static BigDecimal calculatePercentage(Integer count, Integer total) {
-        if (count == null || total == null || total == 0) {
+        if (count == null || total == 0) {
             return BigDecimal.ZERO;
         }
         return BigDecimal.valueOf(count)
@@ -35,4 +40,3 @@ public class ReservationStatisticsMapper {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 }
-

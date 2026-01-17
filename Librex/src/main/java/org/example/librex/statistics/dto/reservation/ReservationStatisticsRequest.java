@@ -1,4 +1,4 @@
-package org.example.librex.statistics.dto;
+package org.example.librex.statistics.dto.reservation;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
