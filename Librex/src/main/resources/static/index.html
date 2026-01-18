@@ -1,2362 +1,465 @@
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Librex</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <style>
-            :root {
-                --bg: #0f172a;
-                --bg-soft: #111827;
-                --card: #1f2937;
-                --accent: #3b82f6;
-                --accent-soft: rgba(59, 130, 246, 0.15);
-                --text: #f9fafb;
-                --muted: #9ca3af;
-                --danger: #ef4444;
-                --success: #22c55e;
-                --info: #3b82f6;
-                --radius: 16px;
-            }
-
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-                font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                    "Segoe UI", sans-serif;
-            }
-
-            body {
-                background: radial-gradient(
-                    circle at top,
-                    #1d4ed8 0,
-                    #020617 45%,
-                    #000000 100%
-                );
-                color: var(--text);
-                min-height: 100vh;
-                display: flex;
-                align-items: stretch;
-                justify-content: center;
-            }
-
-            #app {
-                width: 100%;
-                max-width: 1100px;
-                margin: 24px;
-                background: linear-gradient(
-                    145deg,
-                    rgba(15, 23, 42, 0.98),
-                    rgba(2, 6, 23, 0.98)
-                );
-                border-radius: 24px;
-                box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9),
-                    0 0 0 1px rgba(148, 163, 184, 0.15);
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-            }
-
-            header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 16px 24px;
-                border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-                background: linear-gradient(
-                    90deg,
-                    rgba(15, 23, 42, 0.9),
-                    rgba(30, 64, 175, 0.7)
-                );
-                backdrop-filter: blur(12px);
-            }
-
-            header .logo {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-weight: 700;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                font-size: 14px;
-                color: var(--text);
-            }
-
-            header .logo-icon {
-                width: 28px;
-                height: 28px;
-                border-radius: 999px;
-                background: radial-gradient(
-                    circle at 30% 30%,
-                    #bfdbfe,
-                    #1d4ed8
-                );
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 16px;
-                color: #e5e7eb;
-                box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9);
-            }
-
-            header .logo span {
-                opacity: 0.9;
-            }
-
-            .chip {
-                padding: 4px 10px;
-                border-radius: 999px;
-                background: rgba(15, 23, 42, 0.6);
-                color: var(--muted);
-                font-size: 11px;
-                text-transform: uppercase;
-                letter-spacing: 0.16em;
-                border: 1px solid rgba(148, 163, 184, 0.3);
-            }
-
-            .btn-small {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-
-            main {
-                flex: 1;
-                display: flex;
-                padding: 24px;
-                gap: 24px;
-            }
-
-            .hidden {
-                display: none !important;
-            }
-
-            /* AUTH SCREEN */
-
-            #auth-screen {
-                width: 100%;
-                display: flex;
-                gap: 24px;
-            }
-
-            .auth-left {
-                flex: 1;
-                padding-right: 16px;
-                border-right: 1px solid rgba(148, 163, 184, 0.2);
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .auth-title {
-                font-size: 28px;
-                font-weight: 700;
-                margin-bottom: 6px;
-            }
-
-            .auth-subtitle {
-                font-size: 14px;
-                color: var(--muted);
-                max-width: 360px;
-            }
-
-            .auth-highlight {
-                margin-top: 16px;
-                padding: 10px 12px;
-                border-radius: 12px;
-                background: rgba(15, 23, 42, 0.9);
-                border: 1px solid rgba(96, 165, 250, 0.6);
-                font-size: 12px;
-                color: #dbeafe;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .auth-highlight span.badge {
-                padding: 2px 8px;
-                border-radius: 999px;
-                background: rgba(59, 130, 246, 0.2);
-                border: 1px solid rgba(59, 130, 246, 0.5);
-                font-size: 11px;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-            }
-
-            .auth-right {
-                flex: 1.1;
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .tabs {
-                display: inline-flex;
-                padding: 2px;
-                border-radius: 999px;
-                background: rgba(15, 23, 42, 0.9);
-                border: 1px solid rgba(148, 163, 184, 0.4);
-                margin-bottom: 8px;
-            }
-
-            .tab {
-                padding: 6px 14px;
-                border-radius: 999px;
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.16em;
-                cursor: pointer;
-                color: var(--muted);
-                border: none;
-                background: transparent;
-                transition: all 0.15s ease-out;
-            }
-
-            .tab.active {
-                background: linear-gradient(135deg, #2563eb, #4f46e5);
-                color: white;
-                box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
-            }
-
-            form {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                padding: 16px;
-                border-radius: 16px;
-                background: rgba(15, 23, 42, 0.92);
-                border: 1px solid rgba(148, 163, 184, 0.35);
-            }
-
-            .field {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            label {
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.12em;
-                color: var(--muted);
-            }
-
-            input {
-                background: #020617;
-                border-radius: 10px;
-                border: 1px solid rgba(148, 163, 184, 0.6);
-                padding: 8px 10px;
-                color: var(--text);
-                font-size: 14px;
-                outline: none;
-                transition: border-color 0.1s, box-shadow 0.1s,
-                    background-color 0.1s;
-            }
-
-            input:focus {
-                border-color: var(--accent);
-                box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
-                background: #020617;
-            }
-
-            .btn {
-                border-radius: 999px;
-                padding: 9px 14px;
-                border: none;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                transition: all 0.12s ease-out;
-            }
-
-            .btn-primary {
-                background: linear-gradient(135deg, #2563eb, #4f46e5);
-                color: white;
-                box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
-            }
-
-            .btn-primary:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 14px 35px rgba(37, 99, 235, 0.55);
-            }
-
-            .btn-secondary {
-                background: rgba(15, 23, 42, 0.9);
-                color: var(--muted);
-                border: 1px solid rgba(148, 163, 184, 0.5);
-            }
-
-            .btn-secondary:hover {
-                background: rgba(15, 23, 42, 1);
-                color: #e5e7eb;
-            }
-
-            .form-footer {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 4px;
-                font-size: 12px;
-                color: var(--muted);
-                gap: 8px;
-                flex-wrap: wrap;
-            }
-
-            .error {
-                font-size: 12px;
-                color: var(--danger);
-                padding: 4px 8px;
-                border-radius: 8px;
-                background: rgba(127, 29, 29, 0.35);
-                border: 1px solid rgba(239, 68, 68, 0.6);
-            }
-
-            .success-message {
-                font-size: 12px;
-                color: var(--success);
-                padding: 4px 8px;
-                border-radius: 8px;
-                background: rgba(22, 101, 52, 0.35);
-                border: 1px solid rgba(34, 197, 94, 0.6);
-            }
-
-            /* MAIN SCREEN */
-
-            #main-screen {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-
-            .main-content {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                padding: 16px 24px 24px;
-            }
-
-            .main-top {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                margin-bottom: 16px;
-                gap: 16px;
-                flex-wrap: wrap;
-            }
-
-            .main-top-title {
-                font-size: 24px;
-                font-weight: 700;
-            }
-
-            .main-top-subtitle {
-                font-size: 13px;
-                color: var(--muted);
-                margin-top: 4px;
-            }
-
-            .profile-button {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 6px 12px;
-                border-radius: 999px;
-                background: rgba(15, 23, 42, 0.9);
-                border: 1px solid rgba(148, 163, 184, 0.6);
-                cursor: pointer;
-                color: var(--muted);
-                font-size: 13px;
-                transition: all 0.12s ease-out;
-            }
-
-            .profile-button:hover {
-                background: rgba(15, 23, 42, 1);
-                color: #e5e7eb;
-                transform: translateY(-1px);
-            }
-
-            .profile-avatar {
-                width: 24px;
-                height: 24px;
-                border-radius: 999px;
-                background: radial-gradient(
-                    circle at 30% 30%,
-                    #f9a8d4,
-                    #1d4ed8
-                );
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                color: #0b1120;
-                font-weight: 700;
-            }
-
-            .books-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 16px;
-            }
-
-            .book-card {
-                background: var(--card);
-                border-radius: var(--radius);
-                border: 1px solid rgba(148, 163, 184, 0.35);
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                cursor: pointer;
-                transition: all 0.12s ease-out;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .book-card::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: radial-gradient(
-                    circle at top,
-                    rgba(59, 130, 246, 0.18),
-                    transparent 55%
-                );
-                opacity: 0;
-                transition: opacity 0.12s ease-out;
-                pointer-events: none;
-            }
-
-            .book-card:hover::before {
-                opacity: 1;
-            }
-
-            .book-card:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
-                border-color: rgba(59, 130, 246, 0.7);
-            }
-
-            .book-cover {
-                width: 100%;
-                aspect-ratio: 3 / 4;
-                border-radius: 12px;
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-color: #020617;
-                border: 1px solid rgba(31, 41, 55, 0.9);
-            }
-
-            .book-title {
-                font-size: 14px;
-                font-weight: 600;
-                line-height: 1.3;
-            }
-
-            .book-author {
-                font-size: 12px;
-                color: var(--muted);
-            }
-
-            .book-meta {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 2px;
-            }
-
-            .book-chip {
-                font-size: 11px;
-                padding: 2px 6px;
-                border-radius: 999px;
-                background: rgba(15, 23, 42, 0.9);
-                border: 1px solid rgba(148, 163, 184, 0.7);
-                color: var(--muted);
-            }
-
-            .book-tag {
-                font-size: 11px;
-                color: rgba(129, 140, 248, 0.9);
-            }
-
-            .empty-state {
-                padding: 32px 16px;
-                text-align: center;
-                color: var(--muted);
-                font-size: 14px;
-            }
-
-            /* MODAL STYLES (for Profile and Book Details) */
-            .modal-backdrop {
-                position: fixed;
-                inset: 0;
-                background: rgba(15, 23, 42, 0.7);
-                display: none;
-                align-items: center;
-                justify-content: center;
-                z-index: 50;
-            }
-
-            .modal-backdrop.active {
-                display: flex;
-            }
-
-            .modal {
-                width: 360px;
-                max-width: 90vw;
-                background: rgba(15, 23, 42, 0.98);
-                border-radius: 20px;
-                border: 1px solid rgba(148, 163, 184, 0.6);
-                box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9),
-                    0 0 0 1px rgba(148, 163, 184, 0.25);
-                padding: 18px 18px 16px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .modal-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            .modal-header .title {
-                font-size: 18px;
-                font-weight: 600;
-            }
-            .modal-body {
-                font-size: 13px;
-                color: var(--muted);
-                max-height: 70vh;
-                overflow-y: auto;
-            }
-            .modal-footer {
-                display: flex;
-                justify-content: flex-end;
-                gap: 8px;
-            }
-
-            /* BOOK DETAILS SPECIFIC */
-            #book-details-modal .book-cover-large {
-                width: 100%;
-                height: 200px;
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-color: #020617;
-                border-radius: 12px;
-                margin-bottom: 12px;
-            }
-            #book-details-modal .book-description {
-                margin-top: 8px;
-                margin-bottom: 12px;
-                font-size: 14px;
-                line-height: 1.5;
-                color: var(--text);
-            }
-            #book-details-modal .book-details-section {
-                border-top: 1px solid rgba(148, 163, 184, 0.2);
-                padding-top: 12px;
-                margin-top: 12px;
-            }
-            #book-details-modal .book-details-section .section-title {
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.12em;
-                color: var(--muted);
-                margin-bottom: 8px;
-            }
-            #book-details-modal .copy-list {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-            #book-details-modal .copy-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background: var(--bg-soft);
-                padding: 8px 12px;
-                border-radius: 10px;
-                border: 1px solid rgba(148, 163, 184, 0.3);
-                font-size: 13px;
-            }
-            #book-details-modal .copy-item.unavailable {
-                opacity: 0.6;
-                background: #272c36;
-            }
-            #book-details-modal .copy-item .inventory-number {
-                font-weight: 600;
-                color: var(--text);
-            }
-            #book-details-modal .copy-item .status {
-                color: var(--success);
-                font-weight: 500;
-            }
-            #book-details-modal .copy-item.unavailable .status {
-                color: var(--danger);
-            }
-            #book-details-modal .waitlist-info {
-                text-align: center;
-                font-style: italic;
-                color: var(--muted);
-                margin-top: 12px;
-            }
-
-            @media (max-width: 800px) {
-                main {
-                    flex-direction: column;
-                }
-
-                #auth-screen {
-                    flex-direction: column;
-                }
-
-                .auth-left {
-                    padding-right: 0;
-                    border-right: none;
-                    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-                    padding-bottom: 16px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div id="app">
-            <header>
-                <div class="logo">
-                    <div class="logo-icon">Lx</div>
-                    <span>Librex</span>
-                </div>
-                <div class="chip">Library • Prototype UI</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Librex</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./assets/css/app.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <header>
+        <div class="logo">
+          <div class="logo-icon">Lx</div>
+          <span>Librex</span>
+        </div>
+        <div class="chip">Library • Prototype UI</div>
+        <button
+          id="librarian-panel-btn"
+          class="chip hidden"
+          style="
+            cursor: pointer;
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border-color: #3b82f6;
+          "
+        >
+          Panel Bibliotekarza
+        </button>
+      </header>
+
+      <main>
+        <!-- AUTH SCREEN -->
+        <section id="auth-screen">
+          <div class="auth-left">
+            <div>
+              <div class="auth-title">Zaloguj się do Librex</div>
+              <div class="auth-subtitle">
+                Java jest mózgiem, a to jest tylko ładny frontend. Używamy HTTP
+                Basic Auth i Twoich istniejących endpointów.
+              </div>
+            </div>
+            <div class="auth-highlight">
+              <span class="badge">Info</span>
+              <span
+                >Po rejestracji zaloguj się tym samym loginem i hasłem, żeby
+                zobaczyć swoje książki.</span
+              >
+            </div>
+          </div>
+
+          <div class="auth-right">
+            <div class="tabs">
+              <button class="tab active" data-tab="login">Logowanie</button>
+              <button class="tab" data-tab="register">Utwórz konto</button>
+            </div>
+
+            <div id="auth-messages"></div>
+
+            <!-- Login form -->
+            <form id="login-form">
+              <div class="field">
+                <label for="login-username">Nazwa użytkownika</label>
+                <input
+                  id="login-username"
+                  name="username"
+                  autocomplete="username"
+                />
+              </div>
+              <div class="field">
+                <label for="login-password">Hasło</label>
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Zaloguj się</button>
+              <div class="form-footer">
+                <span>Nie masz konta?</span>
                 <button
-                    id="librarian-panel-btn"
+                  type="button"
+                  class="btn btn-secondary btn-small"
+                  id="go-register"
+                >
+                  Utwórz konto
+                </button>
+              </div>
+            </form>
+
+            <!-- Register form -->
+            <form id="register-form" class="hidden">
+              <div class="field">
+                <label for="reg-firstname">Imię</label>
+                <input id="reg-firstname" name="firstname" />
+              </div>
+              <div class="field">
+                <label for="reg-surname">Nazwisko</label>
+                <input id="reg-surname" name="surname" />
+              </div>
+              <div class="field">
+                <label for="reg-email">E-mail</label>
+                <input
+                  id="reg-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="field">
+                <label for="reg-username">Nazwa użytkownika</label>
+                <input
+                  id="reg-username"
+                  name="username"
+                  autocomplete="username"
+                />
+              </div>
+              <div class="field">
+                <label for="reg-password">Hasło</label>
+                <input
+                  id="reg-password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Utwórz konto</button>
+              <div class="form-footer">
+                <span>Masz już konto?</span>
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-small"
+                  id="go-login"
+                >
+                  Zaloguj się
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- MAIN SCREEN -->
+        <section id="main-screen" class="hidden">
+          <div class="main-content">
+            <div class="main-top">
+              <div>
+                <div class="main-top-title">Twoja biblioteka</div>
+                <div class="main-top-subtitle">
+                  Książki pobrane z backendu Javy – to jest tylko ładna warstwa
+                  na wierzchu.
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <button
+                  id="notifications-button"
+                  class="profile-button"
+                  title="Powiadomienia"
+                >
+                  <span style="font-size: 16px; line-height: 1">🔔</span>
+                  <span>Powiadomienia</span>
+                  <span
+                    id="notifications-badge"
                     class="chip hidden"
                     style="
-                        cursor: pointer;
-                        background: rgba(59, 130, 246, 0.2);
-                        color: #93c5fd;
-                        border-color: #3b82f6;
+                      margin-left: 6px;
+                      background: rgba(239, 68, 68, 0.15);
+                      color: #fecaca;
+                      border-color: rgba(239, 68, 68, 0.5);
                     "
-                >
-                    Panel Bibliotekarza
+                  >
+                    0
+                  </span>
                 </button>
-            </header>
 
-            <main>
-                <!-- AUTH SCREEN -->
-                <section id="auth-screen">
-                    <div class="auth-left">
-                        <div>
-                            <div class="auth-title">Zaloguj się do Librex</div>
-                            <div class="auth-subtitle">
-                                Java jest mózgiem, a to jest tylko ładny
-                                frontend. Używamy HTTP Basic Auth i Twoich
-                                istniejących endpointów.
-                            </div>
-                        </div>
-                        <div class="auth-highlight">
-                            <span class="badge">Info</span>
-                            <span
-                                >Po rejestracji zaloguj się tym samym loginem i
-                                hasłem, żeby zobaczyć swoje książki.</span
-                            >
-                        </div>
-                    </div>
-
-                    <div class="auth-right">
-                        <div class="tabs">
-                            <button class="tab active" data-tab="login">
-                                Logowanie
-                            </button>
-                            <button class="tab" data-tab="register">
-                                Utwórz konto
-                            </button>
-                        </div>
-
-                        <div id="auth-messages"></div>
-
-                        <!-- Login form -->
-                        <form id="login-form">
-                            <div class="field">
-                                <label for="login-username"
-                                    >Nazwa użytkownika</label
-                                >
-                                <input
-                                    id="login-username"
-                                    name="username"
-                                    autocomplete="username"
-                                />
-                            </div>
-                            <div class="field">
-                                <label for="login-password">Hasło</label>
-                                <input
-                                    id="login-password"
-                                    name="password"
-                                    type="password"
-                                    autocomplete="current-password"
-                                />
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                Zaloguj się
-                            </button>
-                            <div class="form-footer">
-                                <span>Nie masz konta?</span>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary btn-small"
-                                    id="go-register"
-                                >
-                                    Utwórz konto
-                                </button>
-                            </div>
-                        </form>
-
-                        <!-- Register form -->
-                        <form id="register-form" class="hidden">
-                            <div class="field">
-                                <label for="reg-firstname">Imię</label>
-                                <input id="reg-firstname" name="firstname" />
-                            </div>
-                            <div class="field">
-                                <label for="reg-surname">Nazwisko</label>
-                                <input id="reg-surname" name="surname" />
-                            </div>
-                            <div class="field">
-                                <label for="reg-email">E-mail</label>
-                                <input
-                                    id="reg-email"
-                                    name="email"
-                                    type="email"
-                                    autocomplete="email"
-                                />
-                            </div>
-                            <div class="field">
-                                <label for="reg-username"
-                                    >Nazwa użytkownika</label
-                                >
-                                <input
-                                    id="reg-username"
-                                    name="username"
-                                    autocomplete="username"
-                                />
-                            </div>
-                            <div class="field">
-                                <label for="reg-password">Hasło</label>
-                                <input
-                                    id="reg-password"
-                                    name="password"
-                                    type="password"
-                                    autocomplete="new-password"
-                                />
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                Utwórz konto
-                            </button>
-                            <div class="form-footer">
-                                <span>Masz już konto?</span>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary btn-small"
-                                    id="go-login"
-                                >
-                                    Zaloguj się
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- MAIN SCREEN -->
-                <section id="main-screen" class="hidden">
-                    <div class="main-content">
-                        <div class="main-top">
-                            <div>
-                                <div class="main-top-title">
-                                    Twoja biblioteka
-                                </div>
-                                <div class="main-top-subtitle">
-                                    Książki pobrane z backendu Javy – to jest
-                                    tylko ładna warstwa na wierzchu.
-                                </div>
-                            </div>
-                            <div
-                                style="
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 10px;
-                                "
-                            >
-                                <button
-                                    id="notifications-button"
-                                    class="profile-button"
-                                    title="Powiadomienia"
-                                >
-                                    <span
-                                        style="font-size: 16px; line-height: 1"
-                                        >🔔</span
-                                    >
-                                    <span>Powiadomienia</span>
-                                    <span
-                                        id="notifications-badge"
-                                        class="chip hidden"
-                                        style="
-                                            margin-left: 6px;
-                                            background: rgba(239, 68, 68, 0.15);
-                                            color: #fecaca;
-                                            border-color: rgba(
-                                                239,
-                                                68,
-                                                68,
-                                                0.5
-                                            );
-                                        "
-                                    >
-                                        0
-                                    </span>
-                                </button>
-
-                                <button
-                                    id="profile-button"
-                                    class="profile-button"
-                                >
-                                    <div
-                                        class="profile-avatar"
-                                        id="profile-avatar-initials"
-                                    >
-                                        U
-                                    </div>
-                                    <span id="profile-button-name"
-                                        >Użytkownik</span
-                                    >
-                                </button>
-                            </div>
-                        </div>
-
-                        <div id="books-container">
-                            <div class="empty-state" id="books-empty">
-                                Brak wyników lub endpoint /api/books nie jest
-                                jeszcze podłączony.<br />
-                                Dodaj później REST API w Javie (GET /api/books)
-                                i zwróć listę książek, a kafelki zapełnią się
-                                automatycznie.
-                            </div>
-                            <div class="books-grid" id="books-grid"></div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-
-        <!-- PROFILE MODAL -->
-        <div id="profile-modal-backdrop" class="modal-backdrop">
-            <div id="profile-modal" class="modal">
-                <div class="modal-header">
-                    <div class="title">Twój profil</div>
-                    <button
-                        id="profile-close"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Zamknij
-                    </button>
-                </div>
-                <div class="profile-main">
-                    <div class="profile-main-avatar" id="profile-avatar-big">
-                        U
-                    </div>
-                    <div class="profile-main-text">
-                        <div class="profile-main-name" id="profile-name">
-                            Imię Nazwisko
-                        </div>
-                        <div
-                            class="profile-main-username"
-                            id="profile-username"
-                        >
-                            @username
-                        </div>
-                    </div>
-                </div>
-                <div class="profile-section">
-                    <div class="profile-section-title">Dane konta</div>
-                    <div class="profile-row">
-                        <span>E-mail</span>
-                        <span id="profile-email">user@example.com</span>
-                    </div>
-                    <div class="profile-row">
-                        <span>Rola</span>
-                        <span id="profile-role">CUSTOMER</span>
-                    </div>
-                </div>
-
-                <div class="profile-section">
-                    <div class="profile-section-title">Moje wypożyczenia</div>
-                    <div
-                        id="profile-reservations-list"
-                        style="
-                            display: flex;
-                            flex-direction: column;
-                            gap: 8px;
-                            margin-top: 8px;
-                        "
-                    >
-                        <!-- JS populated -->
-                    </div>
-                </div>
-
-                <div class="profile-section">
-                    <div class="profile-section-title">
-                        Moje kolejki (Waitlist)
-                    </div>
-                    <div
-                        id="profile-waitlist-list"
-                        style="
-                            display: flex;
-                            flex-direction: column;
-                            gap: 8px;
-                            margin-top: 8px;
-                        "
-                    >
-                        <!-- JS populated -->
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button
-                        id="logout-button"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Wyloguj
-                    </button>
-                </div>
+                <button id="profile-button" class="profile-button">
+                  <div class="profile-avatar" id="profile-avatar-initials">
+                    U
+                  </div>
+                  <span id="profile-button-name">Użytkownik</span>
+                </button>
+              </div>
             </div>
-        </div>
 
-        <!-- NOTIFICATIONS MODAL -->
-        <div id="notifications-modal-backdrop" class="modal-backdrop">
-            <div id="notifications-modal" class="modal" style="width: 520px">
-                <div class="modal-header">
-                    <div class="title">Powiadomienia</div>
-                    <button
-                        id="notifications-close"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Zamknij
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div
-                        style="
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            gap: 10px;
-                            margin-bottom: 12px;
-                        "
-                    >
-                        <div style="font-size: 12px; color: var(--muted)">
-                            Kliknij „Oznacz jako przeczytane”, żeby wykonać
-                            PATCH na backend.
-                        </div>
-                        <button
-                            id="notifications-refresh"
-                            class="btn btn-secondary btn-small"
-                            type="button"
-                        >
-                            Odśwież
-                        </button>
-                    </div>
-
-                    <div
-                        id="notifications-list"
-                        style="display: flex; flex-direction: column; gap: 10px"
-                    >
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: var(--muted);
-                                font-style: italic;
-                            "
-                        >
-                            Brak danych (kliknij Odśwież).
-                        </div>
-                    </div>
-                </div>
+            <div id="books-container">
+              <div class="empty-state" id="books-empty">
+                Brak wyników lub endpoint /api/books nie jest jeszcze
+                podłączony.<br />
+                Dodaj później REST API w Javie (GET /api/books) i zwróć listę
+                książek, a kafelki zapełnią się automatycznie.
+              </div>
+              <div class="books-grid" id="books-grid"></div>
             </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div id="profile-modal-backdrop" class="modal-backdrop">
+      <div id="profile-modal" class="modal">
+        <div class="modal-header">
+          <div class="title">Twój profil</div>
+          <button id="profile-close" class="btn btn-secondary btn-small">
+            Zamknij
+          </button>
+        </div>
+        <div class="profile-main">
+          <div class="profile-main-avatar" id="profile-avatar-big">U</div>
+          <div class="profile-main-text">
+            <div class="profile-main-name" id="profile-name">Imię Nazwisko</div>
+            <div class="profile-main-username" id="profile-username">@username</div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-section-title">Dane konta</div>
+          <div class="profile-row">
+            <span>E-mail</span>
+            <span id="profile-email">user@example.com</span>
+          </div>
+          <div class="profile-row">
+            <span>Rola</span>
+            <span id="profile-role">CUSTOMER</span>
+          </div>
         </div>
 
-        <!-- BOOK DETAILS MODAL -->
-        <div id="book-details-modal-backdrop" class="modal-backdrop">
-            <div id="book-details-modal" class="modal">
-                <div class="modal-header">
-                    <div class="title" id="book-details-modal-title"></div>
-                    <button
-                        id="book-details-close"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Zamknij
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div
-                        class="book-cover-large"
-                        id="book-details-modal-cover"
-                    ></div>
-                    <div
-                        class="book-description"
-                        id="book-details-modal-description"
-                    ></div>
-
-                    <div
-                        id="book-details-available-section"
-                        class="book-details-section hidden"
-                    >
-                        <div class="section-title">Dostępne egzemplarze</div>
-                        <div
-                            class="copy-list"
-                            id="book-details-copy-list"
-                        ></div>
-                    </div>
-
-                    <div
-                        id="book-details-unavailable-section"
-                        class="book-details-section hidden"
-                    >
-                        <div class="section-title">
-                            Brak dostępnych egzemplarzy
-                        </div>
-                        <div class="waitlist-info">
-                            Wszystkie egzemplarze tego tytułu są obecnie
-                            wypożyczone.
-                        </div>
-                        <div class="modal-footer">
-                            <button
-                                id="join-waitlist-btn"
-                                class="btn btn-primary"
-                            >
-                                Zapisz się na listę oczekujących
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="profile-section">
+          <div class="profile-section-title">Moje wypożyczenia</div>
+          <div
+            id="profile-reservations-list"
+            style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px"
+          ></div>
         </div>
 
-        <!-- LIBRARIAN MODAL -->
-        <div id="librarian-modal-backdrop" class="modal-backdrop">
-            <div id="librarian-modal" class="modal" style="width: 500px">
-                <div class="modal-header">
-                    <div class="title">Panel Bibliotekarza</div>
-                    <button
-                        id="librarian-close"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Zamknij
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Search Section -->
-                    <div class="field">
-                        <label>Szukaj użytkownika</label>
-                        <div style="display: flex; gap: 8px">
-                            <input
-                                id="lib-search-input"
-                                placeholder="Login lub email..."
-                                style="flex: 1"
-                            />
-                            <button
-                                id="lib-search-btn"
-                                class="btn btn-primary btn-small"
-                            >
-                                Szukaj
-                            </button>
-                        </div>
-                    </div>
-
-                    <div
-                        id="lib-search-results"
-                        style="
-                            margin-top: 12px;
-                            display: flex;
-                            flex-direction: column;
-                            gap: 8px;
-                        "
-                    ></div>
-
-                    <!-- Selected User Details -->
-                    <div
-                        id="lib-user-details"
-                        class="hidden"
-                        style="
-                            margin-top: 20px;
-                            border-top: 1px solid rgba(148, 163, 184, 0.2);
-                            padding-top: 12px;
-                        "
-                    >
-                        <div
-                            class="section-title"
-                            style="font-weight: 600; margin-bottom: 8px"
-                        >
-                            Wypożyczenia użytkownika:
-                            <span id="lib-selected-user-name"></span>
-                        </div>
-                        <div
-                            id="lib-user-reservations"
-                            style="
-                                display: flex;
-                                flex-direction: column;
-                                gap: 8px;
-                            "
-                        ></div>
-                    </div>
-                </div>
-            </div>
+        <div class="profile-section">
+          <div class="profile-section-title">Moje kolejki (Waitlist)</div>
+          <div
+            id="profile-waitlist-list"
+            style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px"
+          ></div>
         </div>
 
-        <!-- RETURN BOOK MODAL (Nested or separate) -->
-        <div
-            id="return-modal-backdrop"
-            class="modal-backdrop"
-            style="z-index: 60"
-        >
-            <div id="return-modal" class="modal">
-                <div class="modal-header">
-                    <div class="title">Zwrot książki</div>
-                    <button
-                        id="return-close"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Anuluj
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div style="margin-bottom: 12px">
-                        Zwracany egzemplarz:
-                        <span
-                            id="return-inventory-num"
-                            style="font-weight: 600"
-                        ></span>
-                    </div>
-                    <div class="field">
-                        <label
-                            style="
-                                display: flex;
-                                align-items: center;
-                                gap: 8px;
-                                cursor: pointer;
-                            "
-                        >
-                            <input
-                                type="checkbox"
-                                id="return-damaged"
-                                style="width: auto"
-                            />
-                            Książka uszkodzona
-                        </label>
-                    </div>
-                    <div class="field hidden" id="return-damage-details-field">
-                        <label>Opis uszkodzeń</label>
-                        <input id="return-damage-desc" />
-                    </div>
-                    <div class="field hidden" id="return-damage-fee-field">
-                        <label>Opłata za zniszczenie (PLN)</label>
-                        <input
-                            id="return-damage-fee"
-                            type="number"
-                            step="0.01"
-                            value="0.00"
-                        />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="confirm-return-btn" class="btn btn-primary">
-                        Potwierdź zwrot
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            // ======= KONFIGURACJA =======
-            const API_BASE = "";
-
-            let auth = null; // { username, password }
-            let currentUser = null; // { id, username, email, role, firstname, surname }
-
-            function setAuth(username, password) {
-                auth = { username, password };
-                localStorage.setItem("librexAuth", JSON.stringify(auth));
-            }
-
-            function clearAuth() {
-                auth = null;
-                currentUser = null;
-                localStorage.removeItem("librexAuth");
-            }
-
-            function getAuthHeader() {
-                if (!auth) return {};
-                return {
-                    Authorization:
-                        "Basic " + btoa(auth.username + ":" + auth.password),
-                };
-            }
-
-            function showMessage(message, type) {
-                const container = document.getElementById("auth-messages");
-                container.innerHTML = "";
-                if (!message) return;
-                const div = document.createElement("div");
-                div.className = type === "error" ? "error" : "success-message";
-                div.textContent = message;
-                container.appendChild(div);
-            }
-
-            function showGeneralMessage(message, type = "info") {
-                const container =
-                    document.getElementById("general-messages-container") ||
-                    document.createElement("div");
-                if (!document.getElementById("general-messages-container")) {
-                    container.id = "general-messages-container";
-                    container.style.position = "fixed";
-                    container.style.top = "20px";
-                    container.style.right = "20px";
-                    container.style.zIndex = "100";
-                    container.style.maxWidth = "300px";
-                    container.style.display = "flex";
-                    container.style.flexDirection = "column";
-                    container.style.gap = "10px";
-                    document.body.appendChild(container);
-                }
-
-                const div = document.createElement("div");
-                div.className = `message-${type}`;
-                div.style.padding = "10px 15px";
-                div.style.borderRadius = "8px";
-                div.style.backgroundColor =
-                    type === "error"
-                        ? "rgba(239, 68, 68, 0.8)"
-                        : type === "success"
-                        ? "rgba(34, 197, 94, 0.8)"
-                        : "rgba(59, 130, 246, 0.8)";
-                div.style.color = "white";
-                div.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
-                div.textContent = message;
-
-                container.appendChild(div);
-
-                setTimeout(() => {
-                    div.remove();
-                }, 5000);
-            }
-
-            function switchAuthTab(tab) {
-                const loginForm = document.getElementById("login-form");
-                const registerForm = document.getElementById("register-form");
-                const tabs = document.querySelectorAll(".tab");
-
-                tabs.forEach((t) => {
-                    t.classList.toggle("active", t.dataset.tab === tab);
-                });
-
-                if (tab === "login") {
-                    loginForm.classList.remove("hidden");
-                    registerForm.classList.add("hidden");
-                } else {
-                    loginForm.classList.add("hidden");
-                    registerForm.classList.remove("hidden");
-                }
-                showMessage("", "");
-            }
-
-            function showMainScreen() {
-                document.getElementById("auth-screen").classList.add("hidden");
-                document
-                    .getElementById("main-screen")
-                    .classList.remove("hidden");
-            }
-
-            function showAuthScreen() {
-                document.getElementById("main-screen").classList.add("hidden");
-                document
-                    .getElementById("auth-screen")
-                    .classList.remove("hidden");
-            }
-
-            function updateProfileUI(userDetails) {
-                const user = userDetails.user;
-                const initials =
-                    (user.firstname?.[0] || "") + (user.surname?.[0] || "");
-                const upperInitials = initials.toUpperCase() || "U";
-
-                document.getElementById("profile-avatar-initials").textContent =
-                    upperInitials;
-                document.getElementById("profile-avatar-big").textContent =
-                    upperInitials;
-
-                document.getElementById("profile-button-name").textContent =
-                    user.firstname + " " + user.surname;
-
-                document.getElementById("profile-name").textContent =
-                    user.firstname + " " + user.surname;
-                document.getElementById("profile-username").textContent =
-                    "@" + user.username;
-                document.getElementById("profile-email").textContent =
-                    user.email;
-                document.getElementById("profile-role").textContent = user.role;
-
-                const libBtn = document.getElementById("librarian-panel-btn");
-                if (user.role === "ADMIN" || user.role === "LIBRARIAN") {
-                    libBtn.classList.remove("hidden");
-                } else {
-                    libBtn.classList.add("hidden");
-                }
-
-                const resList = document.getElementById(
-                    "profile-reservations-list"
-                );
-                resList.innerHTML = "";
-                if (
-                    userDetails.activeReservations &&
-                    userDetails.activeReservations.length > 0
-                ) {
-                    userDetails.activeReservations.forEach((res) => {
-                        const item = document.createElement("div");
-                        item.className = "profile-row";
-                        item.style.justifyContent = "flex-start";
-                        item.style.flexDirection = "column";
-                        item.style.gap = "2px";
-                        item.innerHTML = `
-                    <div style="font-weight: 600; font-size: 13px;">${
-                        res.bookTitle
-                    }</div>
-                    <div style="font-size: 11px; color: var(--muted);">Do zwrotu: ${
-                        res.expectedReturnDate
-                    } ${
-                            res.overdue
-                                ? '<span style="color: var(--danger)">(PO TERMINIE)</span>'
-                                : ""
-                        }</div>
-                `;
-                        resList.appendChild(item);
-                    });
-                } else {
-                    resList.innerHTML =
-                        '<div style="font-size: 12px; color: var(--muted); font-style: italic;">Brak aktywnych wypożyczeń.</div>';
-                }
-
-                const waitList = document.getElementById(
-                    "profile-waitlist-list"
-                );
-                waitList.innerHTML = "";
-                if (
-                    userDetails.waitlistItems &&
-                    userDetails.waitlistItems.length > 0
-                ) {
-                    userDetails.waitlistItems.forEach((item) => {
-                        const row = document.createElement("div");
-                        row.className = "profile-row";
-                        row.innerHTML = `
-                    <span>${item.bookTitle}</span>
-                    <span>Poz: ${item.position}</span>
-                `;
-                        waitList.appendChild(row);
-                    });
-                } else {
-                    waitList.innerHTML =
-                        '<div style="font-size: 12px; color: var(--muted); font-style: italic;">Brak oczekujących.</div>';
-                }
-            }
-
-            async function fetchCurrentUser(showErrors = true) {
-                try {
-                    const res = await fetch(API_BASE + "/api/auth/me", {
-                        headers: {
-                            ...getAuthHeader(),
-                        },
-                    });
-
-                    if (!res.ok) {
-                        if (showErrors)
-                            showMessage(
-                                "Nie udało się pobrać danych użytkownika.",
-                                "error"
-                            );
-                        return null;
-                    }
-
-                    const userDetails = await res.json();
-                    currentUser = userDetails.user;
-                    updateProfileUI(userDetails);
-                    return currentUser;
-                } catch (e) {
-                    console.error(e);
-                    if (showErrors)
-                        showMessage("Błąd połączenia z backendem.", "error");
-                    return null;
-                }
-            }
-
-            async function login(username, password) {
-                setAuth(username, password);
-                const user = await fetchCurrentUser(true);
-                if (!user) {
-                    clearAuth();
-                    throw new Error("Login failed");
-                }
-                showMainScreen();
-                await fetchBooks();
-                refreshNotificationsUI();
-            }
-
-            async function registerUser(data) {
-                try {
-                    const res = await fetch(API_BASE + "/api/auth/register", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(data),
-                    });
-
-                    if (!res.ok) {
-                        const text = await res.text();
-                        console.error("Register error:", text);
-
-                        let displayMsg = "Rejestracja nie powiodła się.";
-                        try {
-                            if (text.trim().startsWith("{")) {
-                                const errors = JSON.parse(text);
-
-                                const messages =
-                                    Object.values(errors).join(", ");
-                                if (messages) {
-                                    displayMsg = messages;
-                                }
-                            } else {
-                                if (
-                                    text &&
-                                    text.length < 100 &&
-                                    !text.startsWith("<")
-                                ) {
-                                    displayMsg = text;
-                                }
-                            }
-                        } catch (e) {}
-
-                        showMessage(displayMsg, "error");
-                        return false;
-                    }
-
-                    const user = await res.json();
-                    showMessage(
-                        "Konto utworzone! Teraz zaloguj się danymi, które podałeś.",
-                        "success"
-                    );
-                    return user;
-                } catch (e) {
-                    console.error(e);
-                    showMessage("Błąd połączenia przy rejestracji.", "error");
-                    return false;
-                }
-            }
-
-            // ====== KSIĄŻKI ======
-
-            function renderBooks(books) {
-                const grid = document.getElementById("books-grid");
-                const empty = document.getElementById("books-empty");
-
-                grid.innerHTML = "";
-
-                if (!books || books.length === 0) {
-                    empty.style.display = "block";
-                    return;
-                }
-
-                empty.style.display = "none";
-
-                books.forEach((book) => {
-                    const card = document.createElement("div");
-                    card.className = "book-card";
-                    card.dataset.bookId = book.id;
-
-                    const cover = document.createElement("div");
-                    cover.className = "book-cover";
-                    const coverUrl =
-                        book.photo ||
-                        "https://dummyimage.com/300x400/020617/94a3b8.png&text=Book";
-                    cover.style.backgroundImage = `url('${coverUrl}')`;
-
-                    const title = document.createElement("div");
-                    title.className = "book-title";
-                    title.textContent = book.title || "Bez tytułu";
-
-                    const author = document.createElement("div");
-                    author.className = "book-author";
-                    author.textContent = book.author || "Nieznany autor";
-
-                    const meta = document.createElement("div");
-                    meta.className = "book-meta";
-
-                    const availableChip = document.createElement("div");
-                    availableChip.className = "book-chip";
-                    availableChip.textContent = `Dostępne: ${book.availableCopies}`;
-                    availableChip.style.color =
-                        book.availableCopies > 0
-                            ? "var(--success)"
-                            : "var(--danger)";
-                    availableChip.style.borderColor =
-                        book.availableCopies > 0
-                            ? "var(--success)"
-                            : "var(--danger)";
-
-                    const tag = document.createElement("div");
-                    tag.className = "book-tag";
-                    tag.textContent = book.category || "Książka";
-
-                    meta.appendChild(availableChip);
-                    meta.appendChild(tag);
-
-                    card.appendChild(cover);
-                    card.appendChild(title);
-                    card.appendChild(author);
-                    card.appendChild(meta);
-
-                    card.addEventListener("click", () => {
-                        showBookDetailsModal(book);
-                    });
-
-                    grid.appendChild(card);
-                });
-            }
-
-            async function fetchBooks() {
-                try {
-                    const res = await fetch(API_BASE + "/api/books", {
-                        headers: {
-                            "Content-Type": "application/json",
-                            ...getAuthHeader(),
-                        },
-                    });
-
-                    if (!res.ok) {
-                        console.warn(
-                            "GET /api/books nie zwrócił 200. Pewnie endpoint jeszcze nie istnieje."
-                        );
-                        renderBooks([]);
-                        return;
-                    }
-
-                    const books = await res.json();
-                    renderBooks(books);
-                } catch (e) {
-                    console.error(e);
-                    renderBooks([]);
-                }
-            }
-
-            // ====== PROFILE MODAL ======
-
-            function openProfileModal() {
-                const backdrop = document.getElementById(
-                    "profile-modal-backdrop"
-                );
-                backdrop.classList.add("active");
-            }
-
-            function closeProfileModal() {
-                const backdrop = document.getElementById(
-                    "profile-modal-backdrop"
-                );
-                backdrop.classList.remove("active");
-            }
-
-            // ====== BOOK DETAILS MODAL ======
-            async function showBookDetailsModal(book) {
-                if (!currentUser) {
-                    showGeneralMessage(
-                        "Zaloguj się, aby zobaczyć szczegóły książki.",
-                        "error"
-                    );
-                    return;
-                }
-
-                const backdrop = document.getElementById(
-                    "book-details-modal-backdrop"
-                );
-                const modalTitle = document.getElementById(
-                    "book-details-modal-title"
-                );
-                const modalCover = document.getElementById(
-                    "book-details-modal-cover"
-                );
-                const modalDescription = document.getElementById(
-                    "book-details-modal-description"
-                );
-                const availableSection = document.getElementById(
-                    "book-details-available-section"
-                );
-                const unavailableSection = document.getElementById(
-                    "book-details-unavailable-section"
-                );
-                const copyList = document.getElementById(
-                    "book-details-copy-list"
-                );
-                const joinWaitlistBtn =
-                    document.getElementById("join-waitlist-btn");
-
-                modalTitle.textContent = book.title + " by " + book.author;
-                modalCover.style.backgroundImage = `url('${
-                    book.photo ||
-                    "https://dummyimage.com/300x400/020617/94a3b8.png&text=Book"
-                }')`;
-                modalDescription.textContent = book.description;
-
-                copyList.innerHTML = "";
-
-                try {
-                    const res = await fetch(
-                        API_BASE + `/api/books/${book.id}/copies`,
-                        {
-                            headers: {
-                                ...getAuthHeader(),
-                            },
-                        }
-                    );
-
-                    if (!res.ok) {
-                        const errorText = await res.text();
-                        showGeneralMessage(
-                            `Błąd podczas pobierania egzemplarzy: ${errorText}`,
-                            "error"
-                        );
-                        return;
-                    }
-                    const copies = await res.json();
-
-                    if (copies.length > 0 && book.availableCopies > 0) {
-                        availableSection.classList.remove("hidden");
-                        unavailableSection.classList.add("hidden");
-
-                        copies
-                            .filter((copy) => copy.available)
-                            .forEach((copy) => {
-                                const copyItem = document.createElement("div");
-                                copyItem.className = "copy-item";
-                                copyItem.innerHTML = `
-                        <div>
-                            <div class="inventory-number">Nr inwentarzowy: ${copy.inventoryNumber}</div>
-                            <div class="status">Stan: ${copy.condition} (Dostępny)</div>
-                        </div>
-                        <button class="btn btn-primary btn-small borrow-btn" data-copy-id="${copy.id}" data-user-id="${currentUser.id}">Wypożycz</button>
-                    `;
-                                copyList.appendChild(copyItem);
-                            });
-
-                        document
-                            .querySelectorAll(".borrow-btn")
-                            .forEach((btn) => {
-                                btn.addEventListener("click", (e) => {
-                                    const copyId = parseInt(
-                                        e.target.dataset.copyId
-                                    );
-                                    const userId = parseInt(
-                                        e.target.dataset.userId
-                                    );
-                                    borrowBook(copyId, userId, book.id);
-                                    closeBookDetailsModal();
-                                });
-                            });
-                    } else {
-                        availableSection.classList.add("hidden");
-                        unavailableSection.classList.remove("hidden");
-                        joinWaitlistBtn.onclick = () => {
-                            joinWaitlist(book.id, currentUser.id);
-                            closeBookDetailsModal();
-                        };
-                    }
-
-                    backdrop.classList.add("active");
-                } catch (e) {
-                    console.error("Error fetching book copies:", e);
-                    showGeneralMessage(
-                        "Błąd połączenia przy pobieraniu egzemplarzy.",
-                        "error"
-                    );
-                }
-            }
-
-            function closeBookDetailsModal() {
-                const backdrop = document.getElementById(
-                    "book-details-modal-backdrop"
-                );
-                backdrop.classList.remove("active");
-            }
-
-            async function borrowBook(copyId, userId, bookTitleId) {
-                try {
-                    const res = await fetch(
-                        API_BASE + "/api/reservations/borrow",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                ...getAuthHeader(),
-                            },
-                            body: JSON.stringify({
-                                userId: userId,
-                                copyId: copyId,
-                                days: 14,
-                            }),
-                        }
-                    );
-
-                    if (!res.ok) {
-                        const text = await res.text();
-                        showGeneralMessage(
-                            `Błąd wypożyczenia: ${text}`,
-                            "error"
-                        );
-                        return false;
-                    }
-
-                    showGeneralMessage(
-                        "Książka wypożyczona pomyślnie!",
-                        "success"
-                    );
-                    fetchBooks();
-                    return true;
-                } catch (e) {
-                    console.error("Error borrowing book:", e);
-                    showGeneralMessage(
-                        "Błąd połączenia przy wypożyczaniu.",
-                        "error"
-                    );
-                    return false;
-                }
-            }
-
-            async function joinWaitlist(bookTitleId, userId) {
-                try {
-                    const res = await fetch(API_BASE + "/api/waitlist/join", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            ...getAuthHeader(),
-                        },
-                        body: JSON.stringify({
-                            userId: userId,
-                            bookTitleId: bookTitleId,
-                        }),
-                    });
-
-                    if (!res.ok) {
-                        const text = await res.text();
-                        showGeneralMessage(
-                            `Błąd zapisu do kolejki: ${text}`,
-                            "error"
-                        );
-                        return false;
-                    }
-
-                    showGeneralMessage(
-                        "Zapisano do listy oczekujących!",
-                        "success"
-                    );
-                    return true;
-                } catch (e) {
-                    console.error("Error joining waitlist:", e);
-                    showGeneralMessage(
-                        "Błąd połączenia przy zapisie do kolejki.",
-                        "error"
-                    );
-                    return false;
-                }
-            }
-
-            // ====== NOTIFICATIONS ======
-
-            function openNotificationsModal() {
-                document
-                    .getElementById("notifications-modal-backdrop")
-                    .classList.add("active");
-            }
-
-            function closeNotificationsModal() {
-                document
-                    .getElementById("notifications-modal-backdrop")
-                    .classList.remove("active");
-            }
-
-            function formatDateTime(dt) {
-                if (!dt) return "";
-                return dt.replace("T", " ").slice(0, 16);
-            }
-
-            async function fetchUnreadNotifications() {
-                const res = await fetch(API_BASE + "/api/notifications", {
-                    headers: { ...getAuthHeader() },
-                });
-
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(
-                        text || "Nie udało się pobrać powiadomień."
-                    );
-                }
-
-                return await res.json(); // List<NotificationResponse>
-            }
-
-            async function markNotificationAsRead(id) {
-                const res = await fetch(API_BASE + `/api/notifications/${id}`, {
-                    method: "PATCH",
-                    headers: { ...getAuthHeader() },
-                });
-
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(
-                        text || "Nie udało się oznaczyć jako przeczytane."
-                    );
-                }
-                // 204 -> brak body
-            }
-
-            function setNotificationsBadge(count) {
-                const badge = document.getElementById("notifications-badge");
-                if (!badge) return;
-
-                if (!count || count <= 0) {
-                    badge.classList.add("hidden");
-                    badge.textContent = "0";
-                } else {
-                    badge.classList.remove("hidden");
-                    badge.textContent = String(count);
-                }
-            }
-
-            function renderNotifications(list) {
-                const container = document.getElementById("notifications-list");
-                container.innerHTML = "";
-
-                if (!list || list.length === 0) {
-                    container.innerHTML =
-                        '<div style="font-size: 12px; color: var(--muted); font-style: italic;">Brak nieprzeczytanych powiadomień.</div>';
-                    return;
-                }
-
-                list.forEach((n) => {
-                    const card = document.createElement("div");
-                    card.style.background = "rgba(15, 23, 42, 0.5)";
-                    card.style.border = "1px solid rgba(148, 163, 184, 0.25)";
-                    card.style.borderRadius = "12px";
-                    card.style.padding = "10px";
-                    card.style.display = "flex";
-                    card.style.flexDirection = "column";
-                    card.style.gap = "6px";
-
-                    card.innerHTML = `
-      <div style="display:flex; justify-content: space-between; gap: 12px; align-items: baseline;">
-        <div style="font-weight: 700; color: var(--text);">${n.title}</div>
-        <div style="font-size: 11px; color: var(--muted); white-space: nowrap;">
-          ${formatDateTime(n.createdAt)}
+        <div class="modal-footer">
+          <button id="logout-button" class="btn btn-secondary btn-small">
+            Wyloguj
+          </button>
         </div>
       </div>
+    </div>
 
-      <div style="font-size: 12px; color: var(--muted); line-height: 1.45;">
-        ${n.content}
+    <!-- NOTIFICATIONS MODAL -->
+    <div id="notifications-modal-backdrop" class="modal-backdrop">
+      <div id="notifications-modal" class="modal" style="width: 520px">
+        <div class="modal-header">
+          <div class="title">Powiadomienia</div>
+          <button id="notifications-close" class="btn btn-secondary btn-small">
+            Zamknij
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 12px;
+            "
+          >
+            <div style="font-size: 12px; color: var(--muted)">
+              Kliknij „Oznacz jako przeczytane”, żeby wykonać PATCH na backend.
+            </div>
+            <button
+              id="notifications-refresh"
+              class="btn btn-secondary btn-small"
+              type="button"
+            >
+              Odśwież
+            </button>
+          </div>
+
+          <div
+            id="notifications-list"
+            style="display: flex; flex-direction: column; gap: 10px"
+          >
+            <div style="font-size: 12px; color: var(--muted); font-style: italic">
+              Brak danych (kliknij Odśwież).
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div style="display:flex; justify-content:flex-end; margin-top: 6px;">
-        <button class="btn btn-primary btn-small notif-read-btn" data-id="${
-            n.id
-        }" type="button">
-          Oznacz jako przeczytane
-        </button>
+    <!-- BOOK DETAILS MODAL -->
+    <div id="book-details-modal-backdrop" class="modal-backdrop">
+      <div id="book-details-modal" class="modal">
+        <div class="modal-header">
+          <div class="title" id="book-details-modal-title"></div>
+          <button id="book-details-close" class="btn btn-secondary btn-small">
+            Zamknij
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="book-cover-large" id="book-details-modal-cover"></div>
+          <div class="book-description" id="book-details-modal-description"></div>
+
+          <div id="book-details-available-section" class="book-details-section hidden">
+            <div class="section-title">Dostępne egzemplarze</div>
+            <div class="copy-list" id="book-details-copy-list"></div>
+          </div>
+
+          <div id="book-details-unavailable-section" class="book-details-section hidden">
+            <div class="section-title">Brak dostępnych egzemplarzy</div>
+            <div class="waitlist-info">
+              Wszystkie egzemplarze tego tytułu są obecnie wypożyczone.
+            </div>
+            <div class="modal-footer">
+              <button id="join-waitlist-btn" class="btn btn-primary">
+                Zapisz się na listę oczekujących
+              </button>
+            </div>
+          </div>
+
+          <!-- NOWE: REVIEWS -->
+          <div id="book-details-reviews-section" class="book-details-section">
+            <div class="section-title">Opinie</div>
+
+            <div id="reviews-summary" style="font-size:12px;color:var(--muted);margin-bottom:10px">
+              Ładowanie opinii...
+            </div>
+
+            <div
+              id="reviews-list"
+              style="display:flex;flex-direction:column;gap:10px"
+            ></div>
+
+            <div class="book-details-section" style="border-top:none;padding-top:0;margin-top:10px">
+              <div class="section-title">Dodaj opinię</div>
+
+              <div class="field">
+                <label for="review-stars">Ocena (1-5)</label>
+                <input id="review-stars" type="number" min="1" max="5" value="5"/>
+              </div>
+
+              <div class="field">
+                <label for="review-content">Treść</label>
+                <input id="review-content" placeholder="Np. świetna książka..." />
+              </div>
+
+              <div class="modal-footer" style="justify-content:flex-start">
+                <button id="submit-review-btn" class="btn btn-primary" type="button">
+                  Dodaj opinię
+                </button>
+              </div>
+
+              <div id="reviews-hint" style="font-size:11px;color:var(--muted);margin-top:6px">
+                Po dodaniu opinii lista odświeży się automatycznie.
+              </div>
+            </div>
+          </div>
+          <!-- /NOWE: REVIEWS -->
+        </div>
       </div>
-    `;
+    </div>
 
-                    container.appendChild(card);
-                });
+    <!-- LIBRARIAN MODAL -->
+    <div id="librarian-modal-backdrop" class="modal-backdrop">
+      <div id="librarian-modal" class="modal" style="width: 500px">
+        <div class="modal-header">
+          <div class="title">Panel Bibliotekarza</div>
+          <button id="librarian-close" class="btn btn-secondary btn-small">
+            Zamknij
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="field">
+            <label>Szukaj użytkownika</label>
+            <div style="display: flex; gap: 8px">
+              <input
+                id="lib-search-input"
+                placeholder="Login lub email..."
+                style="flex: 1"
+              />
+              <button id="lib-search-btn" class="btn btn-primary btn-small">
+                Szukaj
+              </button>
+            </div>
+          </div>
 
-                container.querySelectorAll(".notif-read-btn").forEach((btn) => {
-                    btn.addEventListener("click", async (e) => {
-                        const id = parseInt(e.target.dataset.id, 10);
+          <div
+            id="lib-search-results"
+            style="
+              margin-top: 12px;
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+            "
+          ></div>
 
-                        try {
-                            await markNotificationAsRead(id);
-                            showGeneralMessage(
-                                "Oznaczono jako przeczytane.",
-                                "success"
-                            );
-                            await refreshNotificationsUI(); // odśwież listę + badge
-                        } catch (err) {
-                            showGeneralMessage("Błąd: " + err.message, "error");
-                        }
-                    });
-                });
-            }
+          <div
+            id="lib-user-details"
+            class="hidden"
+            style="
+              margin-top: 20px;
+              border-top: 1px solid rgba(148, 163, 184, 0.2);
+              padding-top: 12px;
+            "
+          >
+            <div class="section-title" style="font-weight: 600; margin-bottom: 8px">
+              Wypożyczenia użytkownika: <span id="lib-selected-user-name"></span>
+            </div>
 
-            async function refreshNotificationsUI() {
-                if (!currentUser) return;
+            <div
+              id="lib-user-reservations"
+              style="display: flex; flex-direction: column; gap: 8px"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                const container = document.getElementById("notifications-list");
-                container.innerHTML =
-                    '<div style="font-size: 12px; color: var(--muted);">Ładowanie...</div>';
+    <!-- RETURN MODAL -->
+    <div id="return-modal-backdrop" class="modal-backdrop" style="z-index: 60">
+      <div id="return-modal" class="modal">
+        <div class="modal-header">
+          <div class="title">Zwrot książki</div>
+          <button id="return-close" class="btn btn-secondary btn-small">
+            Anuluj
+          </button>
+        </div>
+        <div class="modal-body">
+          <div style="margin-bottom: 12px">
+            Zwracany egzemplarz:
+            <span id="return-inventory-num" style="font-weight: 600"></span>
+          </div>
+          <div class="field">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer">
+              <input type="checkbox" id="return-damaged" style="width: auto" />
+              Książka uszkodzona
+            </label>
+          </div>
+          <div class="field hidden" id="return-damage-details-field">
+            <label>Opis uszkodzeń</label>
+            <input id="return-damage-desc" />
+          </div>
+          <div class="field hidden" id="return-damage-fee-field">
+            <label>Opłata za zniszczenie (PLN)</label>
+            <input id="return-damage-fee" type="number" step="0.01" value="0.00" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="confirm-return-btn" class="btn btn-primary">
+            Potwierdź zwrot
+          </button>
+        </div>
+      </div>
+    </div>
 
-                try {
-                    const list = await fetchUnreadNotifications();
-                    renderNotifications(list);
-                    setNotificationsBadge(list.length);
-                } catch (err) {
-                    container.innerHTML =
-                        '<div style="font-size: 12px; color: var(--danger);">Nie udało się pobrać powiadomień.</div>';
-                    showGeneralMessage("Błąd: " + err.message, "error");
-                }
-            }
-
-            // ====== LIBRARIAN PANEL ======
-
-            function openLibrarianModal() {
-                document
-                    .getElementById("librarian-modal-backdrop")
-                    .classList.add("active");
-                document.getElementById("lib-search-input").focus();
-            }
-
-            function closeLibrarianModal() {
-                document
-                    .getElementById("librarian-modal-backdrop")
-                    .classList.remove("active");
-            }
-
-            async function searchUsers(query) {
-                if (!query || query.length < 2) return;
-
-                try {
-                    const res = await fetch(
-                        API_BASE +
-                            `/api/librarian/users/search?query=${encodeURIComponent(
-                                query
-                            )}`,
-                        {
-                            headers: { ...getAuthHeader() },
-                        }
-                    );
-                    if (res.ok) {
-                        const users = await res.json();
-                        renderUserSearchResults(users);
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            function renderUserSearchResults(users) {
-                const container = document.getElementById("lib-search-results");
-                container.innerHTML = "";
-
-                if (users.length === 0) {
-                    container.innerHTML =
-                        '<div style="font-size: 13px; color: var(--muted);">Brak wyników.</div>';
-                    return;
-                }
-
-                users.forEach((u) => {
-                    const div = document.createElement("div");
-                    div.className = "profile-row";
-                    div.style.cursor = "pointer";
-                    div.style.padding = "8px";
-                    div.style.background = "var(--bg-soft)";
-                    div.style.borderRadius = "8px";
-                    div.innerHTML = `
-                <span style="font-weight: 600;">${u.email}</span>
-                <span style="font-size: 12px; color: var(--muted);">@${u.username}</span>
-            `;
-                    div.onclick = () => loadLibrarianUserDetails(u.id, u.email);
-                    container.appendChild(div);
-                });
-            }
-
-            let selectedReturnCopyId = null;
-
-            async function loadLibrarianUserDetails(userId, email) {
-                document.getElementById("lib-selected-user-name").textContent =
-                    email;
-                document
-                    .getElementById("lib-user-details")
-                    .classList.remove("hidden");
-                const container = document.getElementById(
-                    "lib-user-reservations"
-                );
-                container.innerHTML =
-                    '<div style="font-size: 12px;">Ładowanie...</div>';
-
-                try {
-                    const res = await fetch(
-                        API_BASE + `/api/librarian/users/${userId}`,
-                        {
-                            headers: { ...getAuthHeader() },
-                        }
-                    );
-                    if (res.ok) {
-                        const details = await res.json();
-                        renderLibrarianUserReservations(
-                            details.activeReservations
-                        );
-                    }
-                } catch (e) {
-                    container.innerHTML =
-                        '<div style="color: var(--danger);">Błąd pobierania danych.</div>';
-                }
-            }
-
-            function renderLibrarianUserReservations(reservations) {
-                const container = document.getElementById(
-                    "lib-user-reservations"
-                );
-                container.innerHTML = "";
-
-                if (!reservations || reservations.length === 0) {
-                    container.innerHTML =
-                        '<div style="font-style: italic; color: var(--muted);">Brak aktywnych wypożyczeń.</div>';
-                    return;
-                }
-
-                reservations.forEach((res) => {
-                    const div = document.createElement("div");
-                    div.className = "profile-row";
-                    div.style.background = "rgba(15, 23, 42, 0.5)";
-                    div.style.padding = "8px";
-                    div.style.borderRadius = "8px";
-                    div.innerHTML = `
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-weight: 600;">${res.inventoryNumber} - ${res.bookTitle}</span>
-                    <span style="font-size: 11px; color: var(--muted);">Termin: ${res.expectedReturnDate}</span>
-                </div>
-                <button class="btn btn-primary btn-small return-btn" data-copy-id="${res.copyId}" data-inv="${res.inventoryNumber}">Zwróć</button>
-            `;
-                    container.appendChild(div);
-                });
-
-                document.querySelectorAll(".return-btn").forEach((btn) => {
-                    btn.addEventListener("click", (e) => {
-                        const copyId = e.target.dataset.copyId;
-                        const inv = e.target.dataset.inv;
-                        openReturnModal(copyId, inv);
-                    });
-                });
-            }
-
-            // ====== RETURN MODAL LOGIC ======
-
-            function openReturnModal(copyId, inventoryNumber) {
-                selectedReturnCopyId = copyId;
-                document.getElementById("return-inventory-num").textContent =
-                    inventoryNumber;
-                document.getElementById("return-damaged").checked = false;
-                document.getElementById("return-damage-desc").value = "";
-                document.getElementById("return-damage-fee").value = "0.00";
-                toggleDamageFields(false);
-                document
-                    .getElementById("return-modal-backdrop")
-                    .classList.add("active");
-            }
-
-            function closeReturnModal() {
-                document
-                    .getElementById("return-modal-backdrop")
-                    .classList.remove("active");
-                selectedReturnCopyId = null;
-            }
-
-            function toggleDamageFields(show) {
-                const descField = document.getElementById(
-                    "return-damage-details-field"
-                );
-                const feeField = document.getElementById(
-                    "return-damage-fee-field"
-                );
-                if (show) {
-                    descField.classList.remove("hidden");
-                    feeField.classList.remove("hidden");
-                } else {
-                    descField.classList.add("hidden");
-                    feeField.classList.add("hidden");
-                }
-            }
-
-            async function submitReturn() {
-                if (!selectedReturnCopyId) return;
-
-                const isDamaged =
-                    document.getElementById("return-damaged").checked;
-                const details =
-                    document.getElementById("return-damage-desc").value;
-                const fee =
-                    parseFloat(
-                        document.getElementById("return-damage-fee").value
-                    ) || 0;
-
-                const data = {
-                    copyId: parseInt(selectedReturnCopyId),
-                    damaged: isDamaged,
-                    damageDetails: isDamaged ? details : null,
-                    damageFee: isDamaged ? fee : 0,
-                };
-
-                try {
-                    const res = await fetch(
-                        API_BASE + "/api/reservations/return",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                ...getAuthHeader(),
-                            },
-                            body: JSON.stringify(data),
-                        }
-                    );
-
-                    const text = await res.text();
-                    if (!res.ok) {
-                        showGeneralMessage(`Błąd zwrotu: ${text}`, "error");
-                    } else {
-                        showGeneralMessage(
-                            `Zwrot przyjęty. ${text}`,
-                            "success"
-                        );
-                        closeReturnModal();
-
-                        const email = document.getElementById(
-                            "lib-selected-user-name"
-                        ).textContent;
-
-                        document.getElementById(
-                            "lib-user-reservations"
-                        ).innerHTML = "<i>Odśwież, aby zobaczyć zmiany.</i>";
-                    }
-                } catch (e) {
-                    console.error(e);
-                    showGeneralMessage("Błąd połączenia.", "error");
-                }
-            }
-
-            // ====== INIT ======
-
-            document.addEventListener("DOMContentLoaded", async () => {
-                document
-                    .getElementById("librarian-panel-btn")
-                    .addEventListener("click", openLibrarianModal);
-                document
-                    .getElementById("librarian-close")
-                    .addEventListener("click", closeLibrarianModal);
-
-                document
-                    .getElementById("lib-search-btn")
-                    .addEventListener("click", () => {
-                        searchUsers(
-                            document.getElementById("lib-search-input").value
-                        );
-                    });
-
-                document
-                    .getElementById("return-close")
-                    .addEventListener("click", closeReturnModal);
-                document
-                    .getElementById("return-damaged")
-                    .addEventListener("change", (e) => {
-                        toggleDamageFields(e.target.checked);
-                    });
-                document
-                    .getElementById("confirm-return-btn")
-                    .addEventListener("click", submitReturn);
-
-                document.querySelectorAll(".tab").forEach((tab) => {
-                    tab.addEventListener("click", () => {
-                        switchAuthTab(tab.dataset.tab);
-                    });
-                });
-
-                document
-                    .getElementById("go-register")
-                    .addEventListener("click", () => switchAuthTab("register"));
-                document
-                    .getElementById("go-login")
-                    .addEventListener("click", () => switchAuthTab("login"));
-
-                document
-                    .getElementById("login-form")
-                    .addEventListener("submit", async (e) => {
-                        e.preventDefault();
-                        const username = document
-                            .getElementById("login-username")
-                            .value.trim();
-                        const password =
-                            document.getElementById("login-password").value;
-
-                        if (!username || !password) {
-                            showMessage("Podaj login i hasło.", "error");
-                            return;
-                        }
-
-                        try {
-                            showMessage("Logowanie...", "info");
-                            await login(username, password);
-                            showMessage("", "");
-                            showGeneralMessage(
-                                `Zalogowano jako ${currentUser.username}! Rola: ${currentUser.role}`,
-                                "success"
-                            );
-                        } catch (err) {
-                            showMessage("Niepoprawne dane logowania.", "error");
-                        }
-                    });
-
-                document
-                    .getElementById("register-form")
-                    .addEventListener("submit", async (e) => {
-                        e.preventDefault();
-                        const data = {
-                            firstname: document
-                                .getElementById("reg-firstname")
-                                .value.trim(),
-                            surname: document
-                                .getElementById("reg-surname")
-                                .value.trim(),
-                            email: document
-                                .getElementById("reg-email")
-                                .value.trim(),
-                            username: document
-                                .getElementById("reg-username")
-                                .value.trim(),
-                            password:
-                                document.getElementById("reg-password").value,
-                        };
-
-                        if (
-                            !data.firstname ||
-                            !data.surname ||
-                            !data.email ||
-                            !data.username ||
-                            !data.password
-                        ) {
-                            showMessage("Uzupełnij wszystkie pola.", "error");
-                            return;
-                        }
-
-                        const created = await registerUser(data);
-                        if (created) {
-                            switchAuthTab("login");
-                        }
-                    });
-
-                document
-                    .getElementById("profile-button")
-                    .addEventListener("click", () => {
-                        if (currentUser) {
-                            openProfileModal();
-                        } else {
-                            showGeneralMessage(
-                                "Zaloguj się, aby zobaczyć profil.",
-                                "error"
-                            );
-                        }
-                    });
-
-                document
-                    .getElementById("profile-close")
-                    .addEventListener("click", closeProfileModal);
-
-                document
-                    .getElementById("profile-modal-backdrop")
-                    .addEventListener("click", (e) => {
-                        if (e.target.id === "profile-modal-backdrop") {
-                            closeProfileModal();
-                        }
-                    });
-
-                document
-                    .getElementById("logout-button")
-                    .addEventListener("click", () => {
-                        clearAuth();
-                        closeProfileModal();
-                        showAuthScreen();
-                        showGeneralMessage("Wylogowano pomyślnie.", "info");
-                    });
-
-                document
-                    .getElementById("book-details-close")
-                    .addEventListener("click", closeBookDetailsModal);
-                document
-                    .getElementById("book-details-modal-backdrop")
-                    .addEventListener("click", (e) => {
-                        if (e.target.id === "book-details-modal-backdrop") {
-                            closeBookDetailsModal();
-                        }
-                    });
-
-                // Notifications modal events
-                document
-                    .getElementById("notifications-button")
-                    .addEventListener("click", async () => {
-                        if (!currentUser) {
-                            showGeneralMessage(
-                                "Zaloguj się, aby zobaczyć powiadomienia.",
-                                "error"
-                            );
-                            return;
-                        }
-                        openNotificationsModal();
-                        await refreshNotificationsUI();
-                    });
-
-                document
-                    .getElementById("notifications-close")
-                    .addEventListener("click", closeNotificationsModal);
-
-                document
-                    .getElementById("notifications-modal-backdrop")
-                    .addEventListener("click", (e) => {
-                        if (e.target.id === "notifications-modal-backdrop")
-                            closeNotificationsModal();
-                    });
-
-                document
-                    .getElementById("notifications-refresh")
-                    .addEventListener("click", refreshNotificationsUI);
-
-                const stored = localStorage.getItem("librexAuth");
-                if (stored) {
-                    try {
-                        const parsed = JSON.parse(stored);
-                        if (parsed.username && parsed.password) {
-                            setAuth(parsed.username, parsed.password);
-                            const user = await fetchCurrentUser(false);
-                            if (user) {
-                                showMainScreen();
-                                await fetchBooks();
-                                showGeneralMessage(
-                                    `Zalogowano automatycznie jako ${currentUser.username}! Rola: ${currentUser.role}`,
-                                    "success"
-                                );
-                            } else {
-                                clearAuth();
-                            }
-                        }
-                    } catch (e) {
-                        console.error(e);
-                        clearAuth();
-                    }
-                }
-            });
-        </script>
-    </body>
+    <!-- JS (moduły) -->
+    <script type="module" src="./assets/js/init.js"></script>
+  </body>
 </html>
