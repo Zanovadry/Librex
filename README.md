@@ -20,7 +20,7 @@ M2:
 M3:
 - wysyłanie emaili do użykowników
 - raporty statystyczne
-- [...]
+- baza danych wypełniona danymi
 
 ---
 
@@ -102,6 +102,8 @@ Aplikacja wraz z frontendem będzie wówczas dostępna pod adresem `http://local
     - Użytkowników
     - Rezerwacji
 - Drobne poprawki w kodzie i schemacie bazy danych
+- Wprowadzone dane do bazy
+- Rozbudowany Front End
 
 
 # Nowości dla M2
