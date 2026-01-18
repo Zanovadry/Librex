@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'org.springframework:spring-context-support'
-    implementation 'org.springframework.boot:spring-boot-starter-mail:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {

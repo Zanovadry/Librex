@@ -5,6 +5,7 @@ import org.example.librex.database.dictionaries.permission.PermissionRepository;
 import org.example.librex.database.dictionaries.permission.Role;
 import org.example.librex.database.users.dto.RegistrationRequest;
 import org.example.librex.database.users.dto.UserResponse;
+import org.example.librex.email.EmailService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,17 +15,20 @@ import java.util.List;
 @Service
 public class AppUserService {
 
+    private final EmailService emailService;
     private final AppUserRepository userRepository;
     private final PermissionRepository permissionRepository;
     private final PasswordEncoder passwordEncoder;
     private final org.example.librex.database.reservation.ReservationRepository reservationRepository;
     private final org.example.librex.database.waitlist.WaitlistRepository waitlistRepository;
 
-    public AppUserService(AppUserRepository userRepository,
+    public AppUserService(EmailService emailService,
+            AppUserRepository userRepository,
                           PermissionRepository permissionRepository,
                           PasswordEncoder passwordEncoder,
                           org.example.librex.database.reservation.ReservationRepository reservationRepository,
                           org.example.librex.database.waitlist.WaitlistRepository waitlistRepository) {
+        this.emailService = emailService;
         this.userRepository = userRepository;
         this.permissionRepository = permissionRepository;
         this.passwordEncoder = passwordEncoder;
@@ -88,6 +92,8 @@ public class AppUserService {
         );
 
         AppUser saved = userRepository.save(user);
+        emailService.sendRegisterMessage(user.getEmail(), user.getUsername());
+
         return toResponse(saved);
     }
 
