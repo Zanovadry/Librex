@@ -1,7 +1,7 @@
 # Librex – system do obsługi biblioteki (Backend)
 
 Ten projekt to backend systemu bibliotecznego realizowanego w ramach laboratoriów AGH.  
-Całość została zbudowana w **Spring Boot + PostgreSQL** i spełnia wymagania modułu M1 + M2:
+Całość została zbudowana w **Spring Boot + PostgreSQL** i spełnia wymagania modułu M1 + M2 + [...]:
 
 M1:
 - pełny model obiektowy + bazodanowy,
@@ -16,6 +16,11 @@ M2:
 - rezerwacje
 - powiadomienia
 - recenzje
+
+M3:
+- wysyłanie emaili do użykowników
+- raporty statystyczne
+- [...]
 
 ---
 
@@ -67,6 +72,13 @@ POST /api/waitlist/join
 GET /api/librarian/users/search  
 GET /api/librarian/users/{userId}
 
+## Statystyki
+
+> NOWE!!!
+
+GET /api/statistics/reservations    
+GET /api/statistics/users
+
 ---
 
 # Jak uruchomić projekt
@@ -78,6 +90,18 @@ GET /api/librarian/users/{userId}
 Wystarczy pobrać pliki projektu i uruchomić go, np. za pomocą Intellij\
 Aplikacja wraz z frontendem będzie wówczas dostępna pod adresem `http://localhost:8080/index.html`
 > **Nie wszystkie endpointy są zaimplementowane do frontendu**
+
+
+# Nowości dla M3
+
+- Potwierdzenie rejestracji poprzez wiadomość email    
+<img width="493" height="35" alt="obraz" src="https://github.com/user-attachments/assets/e675ec55-4c1f-4000-bb11-eb86c602dc36" />
+
+- Powiadomienia się wysyłane również jako wiadomość email
+- Stworzone dodatkowe endopointy dla statystyk:
+    - Użytkowników
+    - Rezerwacji
+- Drobne poprawki w kodzie i schemacie bazy danych
 
 
 # Nowości dla M2
