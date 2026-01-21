@@ -2,6 +2,7 @@ package org.example.librex.database.reservation;
 
 import jakarta.validation.Valid;
 import org.example.librex.database.reservation.dto.BorrowRequest;
+import org.example.librex.database.reservation.dto.ProlongRequest;
 import org.example.librex.database.reservation.dto.ReservationResponse;
 import org.example.librex.database.reservation.dto.ReturnRequest;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,11 @@ public class ReservationController {
     public ResponseEntity<String> returnBook(@Valid @RequestBody ReturnRequest request) {
         String message = reservationService.returnBook(request);
         return ResponseEntity.ok(message);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LIBRARIAN')")
+    @PostMapping("/prolong")
+    public ReservationResponse prolongReservation(@Valid @RequestBody ProlongRequest request) {
+        return reservationService.prolongReservation(request);
     }
 }

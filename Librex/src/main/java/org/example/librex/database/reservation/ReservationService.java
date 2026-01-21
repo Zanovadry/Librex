@@ -6,6 +6,7 @@ import org.example.librex.database.notification.NotificationService;
 import org.example.librex.database.penalty.Penalty;
 import org.example.librex.database.penalty.PenaltyRepository;
 import org.example.librex.database.reservation.dto.BorrowRequest;
+import org.example.librex.database.reservation.dto.ProlongRequest;
 import org.example.librex.database.reservation.dto.ReservationResponse;
 import org.example.librex.database.reservation.dto.ReturnRequest;
 import org.example.librex.database.users.AppUser;
@@ -32,7 +33,7 @@ public class ReservationService {
     private final NotificationService notificationService;
 
     private static final BigDecimal DAILY_LATE_FEE = new BigDecimal("0.50"); // 50 groszy za dzień
-
+    private static final Integer MAX_PROLONG_DAYS_AT_ONCE = 14;
 
     public ReservationService(ReservationRepository reservationRepository,
                               BookCopyRepository bookCopyRepository,
@@ -173,6 +174,47 @@ public class ReservationService {
         }
 
         return message.toString();
+    }
+
+    @Transactional
+    public ReservationResponse prolongReservation(ProlongRequest request) {
+        Reservation reservation = reservationRepository.findById(request.getReservationId())
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+
+        if (reservation.getReturnDate() != null) {
+            throw new IllegalStateException("Cannot prolong a returned reservation.");
+        }
+
+        Integer titleId = reservation.getCopy().getEdition().getTitle().getId();
+        List<Waitlist> queue = waitlistRepository.findByBookTitle_IdAndActiveTrueOrderByPositionAsc(titleId);
+        if (!queue.isEmpty()) {
+            throw new IllegalStateException("Cannot prolong. There are users waiting for this title.");
+        }
+
+        Integer userId = reservation.getUser().getId();
+        List<Penalty> unpaidPenalties = penaltyRepository.findByReservation_User_IdAndPaidFalse(userId);
+        if (!unpaidPenalties.isEmpty()) {
+            throw new IllegalStateException("User has unpaid penalties. Cannot prolong reservation.");
+        }
+
+        int extendDays = request.getExtendDays();
+
+
+        if (extendDays > MAX_PROLONG_DAYS_AT_ONCE) {
+            throw new IllegalStateException("extendDays is too large.");
+        }
+
+        LocalDate currentExpected = reservation.getExpectedReturnDate();
+        LocalDate today = LocalDate.now();
+
+        if (currentExpected.isBefore(today)) {
+            throw new IllegalStateException("Cannot prolong after due date has passed. Return the book first.");
+        }
+
+        reservation.setExpectedReturnDate(currentExpected.plusDays(extendDays));
+
+        Reservation saved = reservationRepository.save(reservation);
+        return toResponse(saved);
     }
 
     private ReservationResponse toResponse(Reservation r) {
