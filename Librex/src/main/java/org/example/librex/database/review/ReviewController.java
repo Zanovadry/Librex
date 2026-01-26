@@ -35,6 +35,8 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    //TODO: wyswietlenie wszystkich recenzji
+
     @GetMapping("/title/{titleId}")
     public List<ReviewResponse> getBookReviews(@PathVariable Integer titleId) {
         return reviewService.getBookReviews(titleId);

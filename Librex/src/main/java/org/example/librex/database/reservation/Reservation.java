@@ -1,11 +1,10 @@
 package org.example.librex.database.reservation;
 
 import jakarta.persistence.*;
-import org.example.librex.database.users.AppUser;
 import org.example.librex.database.books.copy.BookCopy;
+import org.example.librex.database.users.AppUser;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservations")
@@ -25,7 +24,7 @@ public class Reservation {
     private BookCopy copy;
 
     @Column(name = "create_date", nullable = false)
-    private LocalDateTime createDate;
+    private LocalDate createDate;
 
     @Column(name = "return_date")
     private LocalDate returnDate;
@@ -33,29 +32,37 @@ public class Reservation {
     @Column(name = "expected_return_date", nullable = false)
     private LocalDate expectedReturnDate;
 
-    @Column(name = "is_damaged", nullable = false)
-    private boolean damaged = false;
-
     @Column(name = "damage_details", length = 500)
     private String damageDetails;
 
     protected Reservation() {
     }
 
+    //TODO: front może nie działać bo usunięte zostało isDamaged
     public Reservation(AppUser user,
                        BookCopy copy,
-                       LocalDateTime createDate,
+                       LocalDate createDate,
                        LocalDate expectedReturnDate,
                        LocalDate returnDate,
-                       boolean damaged,
                        String damageDetails) {
         this.user = user;
         this.copy = copy;
         this.createDate = createDate;
         this.expectedReturnDate = expectedReturnDate;
         this.returnDate = returnDate;
-        this.damaged = damaged;
         this.damageDetails = damageDetails;
+    }
+
+    public boolean isDamaged() {
+        return damageDetails != null;
+    }
+
+    public boolean isReturnedLate() {
+        if (returnDate == null) {
+            return false;
+        } else {
+            return returnDate.isAfter(expectedReturnDate);
+        }
     }
 
     public Integer getId() {
@@ -78,11 +85,11 @@ public class Reservation {
         this.copy = copy;
     }
 
-    public LocalDateTime getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
@@ -100,14 +107,6 @@ public class Reservation {
 
     public void setExpectedReturnDate(LocalDate expectedReturnDate) {
         this.expectedReturnDate = expectedReturnDate;
-    }
-
-    public boolean isDamaged() {
-        return damaged;
-    }
-
-    public void setDamaged(boolean damaged) {
-        this.damaged = damaged;
     }
 
     public String getDamageDetails() {

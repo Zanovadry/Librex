@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,10 +93,10 @@ public class ReservationIntegrationTest {
     @Test
     void testReturnBookWithPenalty() {
 
-        LocalDateTime past = LocalDateTime.now().minusDays(20);
+        LocalDate past = LocalDate.now().minusDays(20);
         LocalDate expected = LocalDate.now().minusDays(5); 
 
-        Reservation res = new Reservation(testUser, testCopy, past, expected, null, false, null);
+        Reservation res = new Reservation(testUser, testCopy, past, expected, null, null);
         testCopy.setAvailable(false);
         bookCopyRepository.save(testCopy);
         reservationRepository.save(res);
@@ -105,7 +104,6 @@ public class ReservationIntegrationTest {
 
         ReturnRequest request = new ReturnRequest();
         request.setCopyId(testCopy.getId());
-        request.setDamaged(true);
         request.setDamageDetails("Torn page");
         request.setDamageFee(new BigDecimal("10.00"));
 

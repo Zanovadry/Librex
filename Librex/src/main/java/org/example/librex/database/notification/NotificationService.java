@@ -4,6 +4,7 @@ import org.example.librex.database.notification.dto.NotificationResponse;
 import org.example.librex.database.users.AppUser;
 import org.example.librex.database.users.AppUserRepository;
 import org.example.librex.database.users.UserNotFoundException;
+import org.example.librex.email.EmailService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,16 @@ public class NotificationService {
 
     private final NotificationRepository repository;
     private final AppUserRepository appUserRepository;
+    private final EmailService emailService;
 
-    public NotificationService(NotificationRepository repository, AppUserRepository userRepository) {
+    public NotificationService(
+            NotificationRepository repository,
+            AppUserRepository userRepository,
+            EmailService emailService
+    ) {
         this.repository = repository;
         this.appUserRepository = userRepository;
+        this.emailService = emailService;
     }
 
     //Creates custom titled notification
@@ -36,7 +43,9 @@ public class NotificationService {
                 content
         );
 
+
         repository.save(notification);
+        emailService.sendSimpleMessage(user.getEmail(), title, content);
     }
 
     @Transactional
@@ -54,6 +63,8 @@ public class NotificationService {
         );
 
         repository.save(notification);
+        emailService.sendBookAvaiableMessage(user.getEmail(), bookTitle);
+
     }
 
     @Transactional
